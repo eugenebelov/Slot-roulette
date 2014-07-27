@@ -41,6 +41,31 @@ body, html {
 	background-color: #00ffcc;
 }
 
+.game-scene .spin {
+	overflow: hidden;
+	height: 100px;
+	display: inline-block;
+	border: 1px solid #999;
+}
+
+.game-scene .spin .slot{
+	float: left;
+	position: relative;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.game-scene .spin .slot li{
+	width: 70px;
+	line-height: 100px;
+	text-align: center;
+	font-size: 40px;
+	font-weight: bold;
+	color: #fff;
+	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
+}
+
 .game-controls {
 	float: left;
 	width: 40%;

@@ -4,7 +4,6 @@
     preloader: document.getElementById("preloader"),
     gameScene: document.getElementById("game-scene"),
     list: document.getElementById("symbolSelectionList"),
-    context: document.getElementById("game-canvas").getContext('2d'),
     winAnimation: document.getElementById("winwin"),
     init: function() {
       document.addEventListener('updateSelectList', this.updateSelectList);
@@ -19,7 +18,9 @@
       GameView.list = document.getElementById("symbolSelectionList");
       GameModel.get().forEach(function(obj, index) {
         GameView.list[index] = new Option(obj.title, obj.value);
-      })
+      });
+
+      Game.selectSymbol(GameView.list[0].value);
     }
   };
 
@@ -85,32 +86,27 @@
 
   window.Game = {
     start: function () {
-      this.userSelection = {}; // default value
-      this.magic = [];
-
       GameModel.fetch("./js/fake/fake-data.json", GameModel.fill);
     },
 
     selectSymbol: function(event) {
       this.userSelection = GameModel.get()[parseInt(event-1)];
-
+      this.magic = [];
       var leng = 100;
       for(var i = 0; i < leng; i++) {
-        if(i < this.userSelection.k)
+        if(i < parseInt(this.userSelection.k))
         {
           this.magic.push(1);
         } else {
           this.magic.push(0);
         }
       }
-
-      // console.log(this.randomize(magic)[Math.round(Math.random() * 100)], Math.round(Math.random() * 100));
-      // console.log(magic[Math.round(Math.random() * 100)]);
     },
 
     spin: function() {
-      var index = Math.round(Math.random() * 100);
-      console.log("spin", this.randomize(this.magic)[index]);
+      var index = Math.round(Math.random() * 99);
+      var isWin = this.randomize(this.magic)[index];
+      console.log("spin", isWin);
     },
 
     randomize: function(array) {
