@@ -1,0 +1,77 @@
+body, html {
+	margin:0; 
+  	padding:0; 
+  	height:100%; 
+}
+
+.box {
+	border-width: 1px;
+	border-color: #00ff00;
+}
+
+.preloader.show {
+	background-color: #ab7efa;
+	width: 0%;
+}
+
+.preloader.hide {
+	background-color: #a6e22f;
+	width: 100%;
+}
+
+.view-game-hidden {
+	visibility: hidden;
+	display: none;
+}
+
+.view-game {
+	background-color: #cfcfcf;
+	display: block;
+    position: absolute;
+    height: auto;
+    bottom: 0; top: 0; left: 0; right: 0;
+	padding: 10px;
+}
+
+.game-scene {
+	float: left;
+	width: 57%;
+	height: 100%;
+	margin-right: 10px;
+	background-color: #00ffcc;
+}
+
+.game-controls {
+	float: left;
+	width: 40%;
+	height: 100%;
+}
+
+.drop-down {
+	width: 100%;
+}
+
+@media all and (orientation: landscape) {
+  .game-scene {
+		background-color: #aaffcc;
+		height: 100%;
+		width: 50%;
+	}
+
+	.game-controls {
+		height: 100%;
+	}
+}
+
+@media all and (orientation: portrait) {
+  .game-scene {
+		background-color: #55ffcc;
+		height: 50%;
+		width: 100%;
+	}
+
+	.game-controls {
+		height: 100%;
+		margin-top: 10px;
+	}
+}

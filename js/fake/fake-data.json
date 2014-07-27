@@ -1,0 +1,40 @@
+{
+  "types":[
+     {
+        "title":"малинка",
+        "value":"1",
+        "k": "95",
+        "image":"./img/SYM1.png"
+     },
+     {
+        "title":"вишня",
+        "value":"2",
+        "k": "65",
+        "image":"./img/SYM2.png"
+     },
+     {
+        "title":"абрикос",
+        "value":"3",
+        "k": "35",
+        "image":"./img/SYM3.png"
+     },
+     {
+        "title":"денежка",
+        "value":"4",
+        "k": "5",
+        "image":"./img/SYM4.png"
+     },
+     {
+        "title":"денежка",
+        "value":"4",
+        "k": "5",
+        "image":"./img/SYM5.png"
+     },
+     {
+        "title":"денежка",
+        "value":"4",
+        "k": "5",
+        "image":"./img/SYM6.png"
+     }
+  ]
+}

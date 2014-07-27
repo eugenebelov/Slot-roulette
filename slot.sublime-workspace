@@ -1,0 +1,567 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"Eve",
+				"EventListener"
+			],
+			[
+				"data",
+				"dataObject"
+			],
+			[
+				"ch",
+				"childViewContainer"
+			],
+			[
+				"prod",
+				"productList"
+			],
+			[
+				"cn",
+				"context"
+			],
+			[
+				"Pro",
+				"ProductItemView"
+			],
+			[
+				"Product",
+				"ProductsItemView"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"Add",
+				"AddProductsItemView"
+			],
+			[
+				"Produc",
+				"ProductsModel"
+			],
+			[
+				"view",
+				"viewOption"
+			],
+			[
+				"co",
+				"console"
+			],
+			[
+				"book",
+				"bookArray"
+			],
+			[
+				"boo",
+				"bookCollection"
+			],
+			[
+				"pro",
+				"productController"
+			],
+			[
+				"sc",
+				"script"
+			],
+			[
+				"M",
+				"Marionette"
+			],
+			[
+				"li",
+				"libs"
+			],
+			[
+				"s",
+				"stringify"
+			],
+			[
+				"add",
+				"added"
+			],
+			[
+				"producs",
+				"productsList"
+			],
+			[
+				"edit",
+				"editProduct"
+			],
+			[
+				"con",
+				"console"
+			],
+			[
+				"dele",
+				"deleteItem"
+			],
+			[
+				"l",
+				"log"
+			],
+			[
+				"get",
+				"getById"
+			],
+			[
+				"h",
+				"htmlItems"
+			],
+			[
+				"produc",
+				"product-list-tpl"
+			],
+			[
+				"back",
+				"background-color"
+			],
+			[
+				"val",
+				"value	AngularJS"
+			],
+			[
+				"pa",
+				"$parent	AngularJS"
+			],
+			[
+				"ngv",
+				"ng-value	AngularJS"
+			],
+			[
+				"text",
+				"ng-textarea	AngularJS"
+			],
+			[
+				"$location",
+				"angular: $locationProvider"
+			],
+			[
+				"$rou",
+				"$routeProvider	AngularJS"
+			],
+			[
+				"ma",
+				"margin"
+			],
+			[
+				"background-",
+				"background-color"
+			],
+			[
+				"in",
+				"inline-block"
+			],
+			[
+				"di",
+				"display"
+			],
+			[
+				"script",
+				"scripts"
+			],
+			[
+				"log",
+				"angular: $log.info"
+			],
+			[
+				"che",
+				"checkThis"
+			],
+			[
+				"u",
+				"userClick"
+			],
+			[
+				"chec",
+				"checkIt"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 2014,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"In",
+				"Package Control: Install Package"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"Sub",
+				"SublimeYeoman: Create project"
+			],
+			[
+				"Su",
+				"SublimeYeoman: Create project"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"pa",
+				"Package Control: Install Package"
+			],
+			[
+				"",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 575.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/citrus/.npm/node-uuid/1.4.1/package/package.json",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/application.js",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/index.html",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/main.js",
+		"/PROJECTS/HTML-Projects/engagepoint-test-task/modern-project/Gruntfile.js",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/views/ButtonBarMenuView.js",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/views/AddProductFormView.js",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/router.js",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/views/ProductItemView.js",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/views/ExportView.js",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/views/ProductEditView.js",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/views/ListCompositeView.js",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/views/GetHandlebarsTemplate.js",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/code-temp.js",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/views/ProductsListView.js",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/require.js",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/model/ProductsCollection.js",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/templates/product-list-item.hbs",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/templates/product-list.hbs",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/views/Layout.js",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/fake/data.js",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/views/GetTemplateHbs.js",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/model/ProductsModel.js",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/controller.js",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/views.js",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/scripts/model.js",
+		"/PROJECTS/HTML-Projects/Products-manager/pure-project/app/src/scripts/templates/edit-product-tpl.html",
+		"/PROJECTS/HTML-Projects/Products-manager/pure-project/app/src/scripts/templates/add-product-tpl.html",
+		"/PROJECTS/HTML-Projects/Products-manager/pure-project/app/src/scripts/templates/product-list-item-tpl.html",
+		"/PROJECTS/HTML-Projects/Products-manager/pure-project/app/src/scripts/templates/product-list-tpl.html",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/app/styles/main.css",
+		"/PROJECTS/HTML-Projects/Products-manager/modern-project/bower.json",
+		"/PROJECTS/HTML-Projects/Products-manager/pure-project/app/index.html",
+		"/PROJECTS/HTML-Projects/Products-manager/pure-project/app/src/scripts/fake/data.json",
+		"/PROJECTS/HTML-Projects/Products-manager/pure-project/app/src/styles/styles.css",
+		"/PROJECTS/HTML-Projects/Products-manager/pure-project/app/src/scripts/hash.js",
+		"/PROJECTS/HTML-Projects/Products-manager/pure-project/app/edit/index.html",
+		"/PROJECTS/HTML-Projects/Products-manager/pure-project/app/src/main.js",
+		"/Users/limestore/Sites/web/Web-app-store/app/views/modals/finishCheckoutPopup.html",
+		"/Users/limestore/Sites/web/Web-app-store/app/scripts/data/products.json",
+		"/Users/limestore/Sites/web/Web-app-store/app/scripts/data/products-in-cart.json",
+		"/Users/limestore/Sites/web/Web-app-store/bower.json",
+		"/Users/limestore/Sites/web/Web-app-store/Gruntfile.js",
+		"/Users/limestore/Sites/web/Web-app-store/app/views/main/index.html",
+		"/Users/limestore/Sites/web/Web-app-store/app/views/about/index.html",
+		"/Users/limestore/Sites/web/Web-app-store/app/views/contacts/index.html",
+		"/Users/limestore/Sites/web/Web-app-store/app/scripts/data/menus.json",
+		"/Users/limestore/Sites/web/Web-app-store/app/views/shop/index.html",
+		"/Users/limestore/Sites/web/Web-app-store/app/shopping-cart/index.html",
+		"/Users/limestore/Sites/web/Web-app-store/app/about/index.html",
+		"/Users/limestore/Sites/web/Web-app-store/app/scripts/vendor.js",
+		"/Users/limestore/Sites/web/Web-app-store/app/styles/libs/bootstrap.css",
+		"/Users/limestore/Sites/web/Web-app-store/app/styles/main.css",
+		"/Users/limestore/Library/Application Support/Sublime Text 2/Packages/Goto-CSS-Declaration/Default (OSX).sublime-keymap",
+		"/Users/limestore/Sites/web/Web-app-store/.gitignore",
+		"/Users/limestore/Sites/web/Web-app-store/package.json",
+		"/Users/limestore/Sites/web/Web-app-store/.bowerrc",
+		"/Users/limestore/.ssh/id_rsa.pub",
+		"/Users/limestore/.ssh/github.pub",
+		"/Users/limestore/Sites/web/Web-app-store/bower_components/normalize.css/normalize.css",
+		"/Users/limestore/Sites/web/Web-app-store/app/index.html",
+		"/Users/limestore/Sites/web/Web-app-store/web-app",
+		"/Users/limestore/Sites/web/test-yo/app/index.html",
+		"/private/var/folders/37/4dj_z_cj7598pxmw056m3xkh0000gn/T/fz3temp-1/index.html",
+		"/FLEX_PROJECTS/FLEX_PROJECTS/DrinkingFriend-light/out/production/DrinkingFriend-light/config.xml",
+		"/FLEX_PROJECTS/FLEX_PROJECTS/DrinkingFriend-light/html-template/index.template.html",
+		"/Users/limestore/Sites/web/test-yo/app/styles/main.scss",
+		"/Users/limestore/Sites/web/test-yo/Gruntfile.js",
+		"/Users/limestore/Sites/web/webproject/Gruntfile.js",
+		"/Users/limestore/Sites/web/webproject/bower.json",
+		"/Volumes/3Q EXT/1_WORK/STORE/index.html",
+		"/FLEX_PROJECTS/FLEX_PROJECTS/VK_DrinkFriend/.gitignore",
+		"/FLEX_PROJECTS/Ignite/AngularJS_test/examples/angularjs-book/chapter8/datepicker/app.js",
+		"/FLEX_PROJECTS/Ignite/AngularJS_test/examples/angularjs-book/chapter8/datepicker/datepicker.js",
+		"/FLEX_PROJECTS/Ignite/AngularJS_test/examples/angularjs-book/chapter8/datepicker/index.html",
+		"/Users/limestore/Desktop/Node was installed at",
+		"/FLEX_PROJECTS/Ignite/AngularJS_test/test1.html",
+		"/Users/limestore/Desktop/install project log",
+		"/FLEX_PROJECTS/autopricer/untitled",
+		"/FLEX_PROJECTS/autopricer/client/app/build.xml"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"GetTemplateHbs",
+			"GetHandlebarsTemplate",
+			"ExportProducts",
+			"router",
+			"ProductsRouter",
+			"EditProductFormView",
+			"(\"edit/\"+this.model.get('sku')",
+			"dataObject",
+			"/bower",
+			"this.",
+			"Router",
+			"ProductApp",
+			"viewOption",
+			"ProductsCollection",
+			"productListRegion",
+			"App",
+			"BookCollection",
+			"(\"",
+			"BookCollection",
+			"product-list",
+			"product-list-body",
+			"div",
+			"products-table-body",
+			"BookItemView",
+			"tbody",
+			"products-table-body",
+			"AppBase",
+			"authorFirst",
+			"authorLast",
+			"itemView-template",
+			"RegionOne",
+			"app",
+			"sampleApp",
+			"BookView",
+			"jquery",
+			"a",
+			"addProduct",
+			"getView",
+			"addProduct",
+			"<div class=\"btn btn-primary btn-sm\" onclick=\"productModel.export()\">Export to JSON</div>",
+			">\n",
+			"\n			",
+			"productsList",
+			"view",
+			"getById",
+			"Title",
+			"edit",
+			"],",
+			"get",
+			"console",
+			"bemybox",
+			"font-size",
+			"label",
+			"moveToCart",
+			"shoppingCartView",
+			"input",
+			"a",
+			"itemData",
+			"http://livedemo00.template-help.com/woocommerce_48036/wp-content/uploads/2013/09/",
+			"currentpageindex",
+			"currentPage",
+			"shop",
+			"srcPrefix",
+			"bowercopy",
+			"'angular.js': 'angular/angular.js',",
+			"angular",
+			"applicationController",
+			"concat",
+			"watch",
+			"list",
+			"li",
+			"list",
+			"main-menu",
+			"header-row",
+			"sale",
+			"no",
+			"nopad",
+			"nopadding",
+			"padding",
+			"clear",
+			"bower_components/bootstrap",
+			"bootstrap",
+			"bower_components/bootstrap/",
+			"Cinzel",
+			"Helvetica",
+			"copymyfiles",
+			"config.app",
+			"concurrent:dist",
+			"oncurrent:dist",
+			"AED\nAOA\nAPR\nARS\nATS\nAUD\nAUG\nAZZ\nBAM\nBDT\nBEF\nBEL\nBHD\nBKT\nBOB\nBRL\nBYR\nCAD\nCAN\nCHF\nCLP\nCNH\nCNY\nCOP\nCUP\nCZK\nDEC\nDEM\nDKK\nDZD\nEEK\nEGP\nESP\nETB\nEUJ\nEUR\nFEB\nFIM\nFJD\nFRF\nGBP\nGEL\nGRD\nHKD\nHRK\nHUF\nIDR\nIEP\nILS\nINR\nIRR\nISK\nITL\nJAG\nJAN\nJAU\nJMD\nJPD\nJPY\nJUL\nJUN\nKES\nKET\nKRW\nKWD\nKWT\nKZT\nLPD\nLPT\nLTL\nLUF\nLVL\nMAD\nMAR\nMAY\nMOP\nMRL\nMXN\nMYR\nNAD\nNLG\nNOK\nNOV\nNPR\nNZD\nNZT\nPAB\nPEN\nPHP\nPLN\nPTE\nPYG\nQAR\nQRS\nRON\nRUB\nRUP\nSAR\nSEK\nSGD\nSIT\nSKK\nSUS\nTAU\nTHB\nTOP\nTRY\nTST\nTWD\nUSD\nUSJ\nUZS\nVEB\nXAG\nXAL\nXAU\nXAX\nXCU\nXEU\nXIR\nXNI\nXPD\nXPT\nXRH\nXRU\nXTA\nXTI\nXZN\nYAU\nYER\nYYY\nZAR\nZAZ\nZZZ",
+			"AED\nAOA\nAPR\nARS\nATS\nAUD\nAUG\nAZZ\nBAM\nBDT\nBEF\nBEL\nBHD\nBKT\nBOB\nBRL\nBYR\n",
+			" ",
+			"git"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": true,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "index.html",
+					"settings":
+					{
+						"buffer_size": 2014,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"boot",
+				"app/styles/libs/bootstrap.css"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 211.0,
+	"status_bar_visible": true
+}
