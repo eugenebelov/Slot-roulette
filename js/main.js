@@ -104,25 +104,17 @@
       }
     },
 
-    // mode: function(args) {
-  
-    //       var start = new Date; // сохранить время начала 
-
-    //       var timer = setInterval(function() {
-
-    //         // вычислить сколько времени прошло
-    //         var progress = (new Date - start) / args.duration;
-    //         if (progress > 1) progress = 1;
-
-    //         // отрисовать анимацию
-    //         args.step(progress);
-            
-    //         if (progress == 1) clearInterval(timer); // конец :)
-             
-    //       }, args.delay || 10); // по умолчанию кадр каждые 10мс
-
-
-    // },
+    move: function(duration, step, delay) {
+      var start = new Date; 
+      var timer = setInterval(function() {
+        
+        var progress = (new Date - start) / duration;
+        if (progress > 1) progress = 1;
+        
+        step(progress);
+        if (progress == 1) clearInterval(timer);
+      }, delay || 10);
+    },
 
     spin: function() {
       var index = Math.round(Math.random() * 99);
@@ -131,7 +123,6 @@
       if(isWin == 1) {
         console.log("User win -> throw selected", this.userSelection);
 
-        // GameView.gameSlot.style( 'top', -600 );
 
       } else {
         var noWin = GameModel.get().concat();
@@ -143,21 +134,6 @@
 
         console.log("if no win -> throw something", noWin[Math.round(Math.random() * (noWin.length -1) )]);
       }
-
-      GameView.gameSlot.classList.add('play');
-      // Game.addAnimationListener(GameView.gameSlot, "AnimationStart", function() {
-      //   console.log('animation - start')
-      // });
-      // Game.addAnimationListener(GameView.gameSlot, "AnimationIteration", function() {
-      //   console.log('animation - iteration')
-      // });
-      // Game.addAnimationListener(GameView.gameSlot, "AnimationEnd", function() {
-      //   console.log('animation - end')
-      // });
-
-      setTimeout(function() {
-        GameView.gameSlot.classList.remove('play');
-      }, 6000);
     },
 
     randomize: function(array) {
