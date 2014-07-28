@@ -100,3 +100,18 @@ body, html {
 		margin-top: 10px;
 	}
 }
+
+.play {
+	-webkit-animation: mymove 1s infinite linear; /*Safari and Chrome*/
+    animation: mymove 1s infinite linear;
+}
+
+@-webkit-keyframes mymove {
+    from {top: 0px;}
+    to {top: -600px;}
+}
+
+@keyframes mymove {
+    from {top: 0px;}
+    to {top: -600px;}
+}

@@ -2,6 +2,7 @@
 
   var GameView = {
     preloader: document.getElementById("preloader"),
+    gameSlot: document.getElementById("game-slot"),
     gameScene: document.getElementById("game-scene"),
     list: document.getElementById("symbolSelectionList"),
     winAnimation: document.getElementById("winwin"),
@@ -103,10 +104,60 @@
       }
     },
 
+    // mode: function(args) {
+  
+    //       var start = new Date; // сохранить время начала 
+
+    //       var timer = setInterval(function() {
+
+    //         // вычислить сколько времени прошло
+    //         var progress = (new Date - start) / args.duration;
+    //         if (progress > 1) progress = 1;
+
+    //         // отрисовать анимацию
+    //         args.step(progress);
+            
+    //         if (progress == 1) clearInterval(timer); // конец :)
+             
+    //       }, args.delay || 10); // по умолчанию кадр каждые 10мс
+
+
+    // },
+
     spin: function() {
       var index = Math.round(Math.random() * 99);
       var isWin = this.randomize(this.magic)[index];
-      console.log("spin", isWin);
+      
+      if(isWin == 1) {
+        console.log("User win -> throw selected", this.userSelection);
+
+        // GameView.gameSlot.style( 'top', -600 );
+
+      } else {
+        var noWin = GameModel.get().concat();
+        for(var i = 0; i < noWin.length; i++) {
+          if(noWin[i].id === this.userSelection.id) {
+            noWin.splice(i, 1);
+          }
+        }
+
+        console.log("if no win -> throw something", noWin[Math.round(Math.random() * (noWin.length -1) )]);
+      }
+
+      GameView.gameSlot.classList.add('play');
+      // Game.addAnimationListener(GameView.gameSlot, "AnimationStart", function() {
+      //   console.log('animation - start')
+      // });
+      // Game.addAnimationListener(GameView.gameSlot, "AnimationIteration", function() {
+      //   console.log('animation - iteration')
+      // });
+      // Game.addAnimationListener(GameView.gameSlot, "AnimationEnd", function() {
+      //   console.log('animation - end')
+      // });
+
+      setTimeout(function() {
+        GameView.gameSlot.classList.remove('play');
+      }, 6000);
     },
 
     randomize: function(array) {
@@ -115,8 +166,13 @@
         });
     },
 
-    spinModifier: function() {
-        return Math.random() * 10;
+    addAnimationListener: function(element, type, callback) {
+      var pfx = ["webkit", "moz", "MS", "o", ""];
+      
+      for (var p = 0; p < pfx.length; p++) {
+        if (!pfx[p]) type = type.toLowerCase();
+        element.addEventListener(pfx[p]+type, callback, false);
+      }
     }
   }
 
