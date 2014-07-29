@@ -1,45 +1,45 @@
 {
   "types":[
      {
-        "id": "1",
+        "id": "0",
         "title":"малинка",
         "value":"1",
         "k": "40",
         "image":"./img/SYM1.png"
      },
      {
-        "id": "2",
+        "id": "1",
         "title":"вишня",
         "value":"2",
         "k": "25",
         "image":"./img/SYM2.png"
      },
      {
-        "id": "3",
+        "id": "2",
         "title":"абрикос",
         "value":"3",
         "k": "35",
         "image":"./img/SYM3.png"
      },
      {
-        "id": "4",
+        "id": "3",
         "title":"денежка1",
         "value":"4",
         "k": "15",
         "image":"./img/SYM4.png"
      },
      {
-        "id": "5",
+        "id": "4",
         "title":"денежка2",
         "value":"5",
         "k": "19",
         "image":"./img/SYM5.png"
      },
      {
-        "id": "6",
+        "id": "5",
         "title":"денежка3",
         "value":"6",
-        "k": "24",
+        "k": "64",
         "image":"./img/SYM6.png"
      }
   ]

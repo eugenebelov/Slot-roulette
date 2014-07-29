@@ -87,6 +87,7 @@
 
   window.Game = {
     start: function () {
+      this.lastWinningId = -1;
       GameModel.fetch("./js/fake/fake-data.json", GameModel.fill);
     },
 
@@ -104,25 +105,76 @@
       }
     },
 
-    move: function(duration, step, delay) {
-      var start = new Date; 
-      var timer = setInterval(function() {
-        
-        var progress = (new Date - start) / duration;
-        if (progress > 1) progress = 1;
-        
-        step(progress);
-        if (progress == 1) clearInterval(timer);
-      }, delay || 10);
+    animate: function(elem, style, unit, from, to, time, callback) {
+      if( !elem) return;
+      var numOfLoops = 3;
+
+      function doOneRotation (endCallback) 
+      {
+        var start = new Date().getTime();
+        var interval = setInterval( function() 
+                                    {
+                                      var step = Math.min(1, (new Date().getTime() - start) / time);
+                                      elem.style[style] = (from-75 + step * (to+75 - (from-75))) + unit;
+                                      if(step == 1)
+                                      {
+                                        clearInterval(interval);
+                                        endCallback();
+                                      }
+                                    }, 20);
+
+        elem.style[style] = from + unit;
+      }
+
+      function doFinishRotation () 
+      {
+        var that = this;
+        var start = new Date().getTime();
+        var finishTime = (GameModel.get().length - (Game.userSelection.id + 1)) * (500 / (GameModel.get().length - (Game.userSelection.id + 1)));
+        var interval = setInterval( function() 
+                                    {
+                                      var step = Math.min(1, (new Date().getTime() - start) / finishTime);
+                                      elem.style[style] = (from + step * ((parseInt(Game.userSelection.id) * -160) - from)) + unit;
+                                      if(step == 1) { 
+                                        clearInterval(interval);
+                                        // that.callback();
+                                      }
+                                    }, 20);
+
+        elem.style[style] = from + unit;
+      }
+
+      function whatNext()
+      {
+        numOfLoops--;
+        (numOfLoops > 0) ? doOneRotation(whatNext) : doFinishRotation();
+      }
+
+
+      doOneRotation(whatNext);
+      
     },
 
     spin: function() {
       var index = Math.round(Math.random() * 99);
       var isWin = this.randomize(this.magic)[index];
+
+      this.from = function() { return GameModel.get().length * -155 };
+      this.to = function() { return 0 };
+      this.timing = function() { return 500 };
       
       if(isWin == 1) {
-        console.log("User win -> throw selected", this.userSelection);
-
+        console.log("User win -> throw selected", this.from(), this.to(), this.timing());
+        this.animate(
+            GameView.gameSlot, "top", "px", 
+            this.from(), 
+            this.to(), 
+            this.timing(),
+            function() {
+              console.log("End Spin");
+              Game.lastWinningId = Game.userSelection.id;
+            }
+        );
 
       } else {
         var noWin = GameModel.get().concat();
