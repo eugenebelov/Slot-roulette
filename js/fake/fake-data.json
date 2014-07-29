@@ -2,42 +2,42 @@
   "types":[
      {
         "id": "0",
-        "title":"малинка",
+        "title":"Wild",
         "value":"1",
         "k": "40",
         "image":"./img/SYM1.png"
      },
      {
         "id": "1",
-        "title":"вишня",
+        "title":"Strawberry",
         "value":"2",
         "k": "25",
         "image":"./img/SYM2.png"
      },
      {
         "id": "2",
-        "title":"абрикос",
+        "title":"Pineapple",
         "value":"3",
         "k": "35",
         "image":"./img/SYM3.png"
      },
      {
         "id": "3",
-        "title":"денежка1",
+        "title":"Lemon",
         "value":"4",
         "k": "15",
         "image":"./img/SYM4.png"
      },
      {
         "id": "4",
-        "title":"денежка2",
+        "title":"Grape",
         "value":"5",
         "k": "19",
         "image":"./img/SYM5.png"
      },
      {
         "id": "5",
-        "title":"денежка3",
+        "title":"Blackberry",
         "value":"6",
         "k": "64",
         "image":"./img/SYM6.png"

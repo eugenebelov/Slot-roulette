@@ -24,19 +24,19 @@
         <div id="preloader" class="preloader show">preloader</div>
         <div id="game-scene" class="view-game-hidden">
             <div class="game-scene">
-                <div class="spin">
-                    <ul class="slot" id="game-slot">
-                        <li><img src="./img/SYM1.png" /></li>
-                        <li><img src="./img/SYM2.png" /></li>
-                        <li><img src="./img/SYM3.png" /></li>
-                        <li><img src="./img/SYM4.png" /></li>
-                        <li><img src="./img/SYM5.png" /></li>
-                        <li><img src="./img/SYM6.png" /></li>
-                    </ul>
-                </div>
+                <div class="container">
+                    <div class="spin">
+                        <ul class="slot" id="game-slot1">
+                        </ul>
+                        <ul class="slot" id="game-slot2">
+                        </ul>
+                        <ul class="slot" id="game-slot3">
+                        </ul>
+                    </div>
+                </div>  
             </div>
             <div class="game-controls">
-                <div class="winwin" id="winwin">WinWin animation</div>
+                <div class="winwin" id="winwin">Spin the wheel!</div>
                 <div class="controls">
                     <select name="symbolSelection" id="symbolSelectionList" class="drop-down" 
                             onchange="Game.selectSymbol(this.value)">

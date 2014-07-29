@@ -2,25 +2,42 @@
 
   var GameView = {
     preloader: document.getElementById("preloader"),
-    gameSlot: document.getElementById("game-slot"),
+    gameSlotL: document.getElementById("game-slot1"),
+    gameSlotC: document.getElementById("game-slot2"),
+    gameSlotR: document.getElementById("game-slot3"),
     gameScene: document.getElementById("game-scene"),
     list: document.getElementById("symbolSelectionList"),
     winAnimation: document.getElementById("winwin"),
     init: function() {
       document.addEventListener('updateSelectList', this.updateSelectList);
       document.addEventListener('allImagesLoaded', this.showGameScene);
+      document.addEventListener('winEvent', this.showWin);
+      document.addEventListener('loseEvent', this.showLose);
     },
 
     showGameScene: function(e) {
       GameView.gameScene.className = 'view-game';
     },
 
+    showWin: function(e) {
+      GameView.winAnimation.innerHTML = 'You Win!';
+    },
+
+    showLose: function(e) {
+      GameView.winAnimation.innerHTML = 'You Lose! <br/> Spin the wheel!';
+    },
+
     updateSelectList:function(e) {
+      var ulNodes = [];
       GameView.list = document.getElementById("symbolSelectionList");
       GameModel.get().forEach(function(obj, index) {
         GameView.list[index] = new Option(obj.title, obj.value);
+        ulNodes.push("<li><img src=" + obj.image + " /></li>");
       });
 
+      GameView.gameSlotL.innerHTML = ulNodes.join('');
+      GameView.gameSlotC.innerHTML = ulNodes.join('');
+      GameView.gameSlotR.innerHTML = ulNodes.join('');
       Game.selectSymbol(GameView.list[0].value);
     }
   };
@@ -87,7 +104,6 @@
 
   window.Game = {
     start: function () {
-      this.lastWinningId = -1;
       GameModel.fetch("./js/fake/fake-data.json", GameModel.fill);
     },
 
@@ -105,9 +121,10 @@
       }
     },
 
-    animate: function(elem, style, unit, from, to, time, callback) {
+    animate: function(elem, style, unit, from, to, time, finish, callback) {
       if( !elem) return;
       var numOfLoops = 3;
+      var callbackHandler = callback;
 
       function doOneRotation (endCallback) 
       {
@@ -115,7 +132,9 @@
         var interval = setInterval( function() 
                                     {
                                       var step = Math.min(1, (new Date().getTime() - start) / time);
-                                      elem.style[style] = (from-75 + step * (to+75 - (from-75))) + unit;
+                                      elem[0].style[style] = (from + step * (to - from)) + unit;
+                                      elem[1].style[style] = (from + step * (to - from)) + unit;
+                                      elem[2].style[style] = (from + step * (to - from)) + unit;
                                       if(step == 1)
                                       {
                                         clearInterval(interval);
@@ -123,25 +142,50 @@
                                       }
                                     }, 20);
 
-        elem.style[style] = from + unit;
+        elem[0].style[style] = from + unit;
+        elem[1].style[style] = from + unit;
+        elem[2].style[style] = from + unit;
       }
 
       function doFinishRotation () 
       {
-        var that = this;
         var start = new Date().getTime();
-        var finishTime = (GameModel.get().length - (Game.userSelection.id + 1)) * (500 / (GameModel.get().length - (Game.userSelection.id + 1)));
-        var interval = setInterval( function() 
+        var finishTime1 = (GameModel.get().length - finish[0]) * (500 / (GameModel.get().length - finish[0]));
+        var finishTime2 = (GameModel.get().length - finish[1]) * (500 / (GameModel.get().length - finish[1]));
+        var finishTime3 = (GameModel.get().length - finish[2]) * (500 / (GameModel.get().length - finish[2]));
+        var interval1 = setInterval( function() 
                                     {
-                                      var step = Math.min(1, (new Date().getTime() - start) / finishTime);
-                                      elem.style[style] = (from + step * ((parseInt(Game.userSelection.id) * -160) - from)) + unit;
+                                      var step = Math.min(1, (new Date().getTime() - start) / finishTime1);
+                                      elem[0].style[style] = (from + step * ((parseInt(finish[0]) * -155) - from)) + unit;
                                       if(step == 1) { 
-                                        clearInterval(interval);
-                                        // that.callback();
+                                        clearInterval(interval1);
+                                        callbackHandler();
                                       }
                                     }, 20);
 
-        elem.style[style] = from + unit;
+        var interval2 = setInterval( function() 
+                                    {
+                                      var step = Math.min(1, (new Date().getTime() - start) / finishTime2);
+                                      elem[1].style[style] = (from + step * ((parseInt(finish[1]) * -155) - from)) + unit;
+                                      if(step == 1) { 
+                                        clearInterval(interval2);
+                                        callbackHandler();
+                                      }
+                                    }, 20);
+
+        var interval3 = setInterval( function() 
+                                    {
+                                      var step = Math.min(1, (new Date().getTime() - start) / finishTime3);
+                                      elem[2].style[style] = (from + step * ((parseInt(finish[2]) * -155) - from)) + unit;
+                                      if(step == 1) { 
+                                        clearInterval(interval3);
+                                        callbackHandler();
+                                      }
+                                    }, 20);
+
+        elem[0].style[style] = from + unit;
+        elem[1].style[style] = from + unit;
+        elem[2].style[style] = from + unit;
       }
 
       function whatNext()
@@ -150,32 +194,13 @@
         (numOfLoops > 0) ? doOneRotation(whatNext) : doFinishRotation();
       }
 
-
       doOneRotation(whatNext);
       
     },
 
-    spin: function() {
-      var index = Math.round(Math.random() * 99);
-      var isWin = this.randomize(this.magic)[index];
-
-      this.from = function() { return GameModel.get().length * -155 };
-      this.to = function() { return 0 };
-      this.timing = function() { return 500 };
-      
-      if(isWin == 1) {
-        console.log("User win -> throw selected", this.from(), this.to(), this.timing());
-        this.animate(
-            GameView.gameSlot, "top", "px", 
-            this.from(), 
-            this.to(), 
-            this.timing(),
-            function() {
-              console.log("End Spin");
-              Game.lastWinningId = Game.userSelection.id;
-            }
-        );
-
+    getEndSpinElement: function(winflag) {
+      if(winflag == 1) {
+        return Game.userSelection.id;
       } else {
         var noWin = GameModel.get().concat();
         for(var i = 0; i < noWin.length; i++) {
@@ -184,23 +209,44 @@
           }
         }
 
-        console.log("if no win -> throw something", noWin[Math.round(Math.random() * (noWin.length -1) )]);
+        return noWin[Math.round(Math.random() * (noWin.length -1) )].id;
       }
+    },
+
+    spin: function() {
+      var index1 = Math.round(Math.random() * 99);
+      var index2 = Math.round(Math.random() * 99);
+      var index3 = Math.round(Math.random() * 99);
+      var isWin1 = this.randomize(this.magic)[index1];
+      var isWin2 = this.randomize(this.magic)[index2];
+      var isWin3 = this.randomize(this.magic)[index3];
+
+      this.from = function() { return GameModel.get().length * -155 };
+      
+      this.animate(
+          [GameView.gameSlotL, GameView.gameSlotC, GameView.gameSlotR], "top", "px", 
+          this.from(), 0, 200, 
+          [this.getEndSpinElement(isWin1), this.getEndSpinElement(isWin2), this.getEndSpinElement(isWin3)],
+          function() {
+            if(isWin1 == 1 && isWin2 == 1 ||
+              isWin2 == 1 && isWin3 == 1 ||
+              isWin3 == 1 && isWin1 == 1 ||
+              isWin1 == 1 && isWin2 == 1 && isWin3 == 1)
+            {
+              document.dispatchEvent(new CustomEvent("winEvent"));
+            } else {
+              document.dispatchEvent(new CustomEvent("loseEvent"));
+            }
+              
+          }
+      );
+      
     },
 
     randomize: function(array) {
         return array.sort(function(a, b) {
             return Math.round(Math.random());
         });
-    },
-
-    addAnimationListener: function(element, type, callback) {
-      var pfx = ["webkit", "moz", "MS", "o", ""];
-      
-      for (var p = 0; p < pfx.length; p++) {
-        if (!pfx[p]) type = type.toLowerCase();
-        element.addEventListener(pfx[p]+type, callback, false);
-      }
     }
   }
 
