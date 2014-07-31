@@ -28,8 +28,8 @@
 
         <div id="gameView" class="view-game hidden">
             <div class="game-scene">
-                <div class="container">
-                    <div class="spin">
+                <div class="spinContainer">
+                    <div id="spinWheel" class="spin">
                         <ul class="slot" id="gameSlotLeft"></ul>
                         <ul class="slot" id="gameSlotCenter"></ul>
                         <ul class="slot" id="gameSlotRight"></ul>
@@ -37,17 +37,20 @@
                 </div>
             </div>
 
-            <div class="game-controls">
-                <div class="controls">
-                    <div class="winAnimation" id="winWin">
+            <div id="gameControls" class="game-controls">
+                <div class="controlsContainer">
+                    <div class="win-animation" id="winWin">
                         Spin the wheel!
                     </div>
+                    <div class="components">
+                        <img src="" alt="" id="selectedResult" />
 
-                    <select name="symbolSelection" id="symbolSelectionList" class="drop-down" 
-                            onchange="Game.selectSymbol(this.value)">
-                    </select>
+                        <select name="symbolSelection" id="symbolSelectionList"
+                                onchange="Game.selectSymbol(this.value)">
+                        </select>
 
-                    <button label="spin" class="btn" onclick="Game.spin()">Spin</button>
+                        <button label="spin" id="spinButton" class="btn" onclick="Game.spinWheel()">.</button>
+                    </div>
                 </div>
             </div>
         </div>

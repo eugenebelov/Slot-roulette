@@ -192,6 +192,9 @@
 .fadeOut {
   -webkit-animation-name: fadeOut;
   animation-name: fadeOut;
+
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
 }
 
 @-webkit-keyframes fadeIn {
@@ -218,3 +221,24 @@
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
 }
+
+.fadeInDelayed {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+
+  -webkit-animation-duration: 1s;
+  -webkit-animation-delay: 1s;
+  animation-duration: 1s;
+  animation-delay: 1s;
+}
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(720deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(720deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(720deg); transform:rotate(720deg); } }
+
+.rotation {
+    -webkit-animation: spin 0.3s linear;
+    -moz-animation: spin 0.3s linear;
+    animation: spin 0.3s linear;
+}
+

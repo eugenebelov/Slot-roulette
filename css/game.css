@@ -20,53 +20,68 @@ body, html {
 }
 
 .view-game {
-	background-color: #cfcfcf;
 	display: block;
     position: absolute;
     height: auto;
     bottom: 0; top: 0; left: 0; right: 0;
-	padding: 10px;
+    background-color: #F3EFE0;
 }
 
 .game-controls {
 	z-index: 2;
 	position: absolute;
-	width: 800px;
-	height: 200px;
-	background-color: #00aa55;
+	width: 50%;
+	height: 50%;
+	left: 25%;
+	top: 25%;
+	background-color: #9A3334;
+	border-radius: 5px;
 }
 
 .game-scene {
+	position: absolute;
 	display: table;
 	float: left;
 	margin-right: 10px;
-	background-color: #00ffcc;
-	width: 800px;
-	height: 200px;
+	background-color: #217C7E;
+	width: 50%;
+	height: 50%;
+	left: 25%;
+	top: 25%;
+	box-shadow: 0 0 10px;
+	border-radius: 5px;
 }
 
-.container {
+.spinContainer {
 	display: table-cell;
 	vertical-align: middle; 
 	text-align:center; 
 }
 
-.controls {
+.controlsContainer {
 	width: 100%;
 	vertical-align: middle;
 	text-align: center;
 	top: -50px;
 }
 
-.winAnimation {
+.win-animation {
 	vertical-align: middle;
 	text-align: center;
-	font-size: 40px;
+	font-size: 50px;
 	font-weight: bold;
-	color: #fff;
+	color: #F3EFE0;
 	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
 	width: 100%;
-	line-height: 150px;	
+	margin-top: 55px;
+	line-height: 20px;	
+}
+
+.components {
+	position: absolute;
+	bottom: 10px;
+	width: 100%;
+	margin: 0 auto;
 }
 
 .game-scene .spin {
@@ -84,61 +99,67 @@ body, html {
 }
 
 .game-scene .spin .slot li{
-	width: 235px;
+	width: 205px;
 	line-height: 155px;
 }
 
-.drop-down {
-	/*width: 100%;*/
-}
-
 .btn {
-	display: inline-block;
-	padding: 6px 12px;
-	margin-bottom: 0;
-	font-size: 14px;
-	font-weight: normal;
-	line-height: 1.42857143;
-	text-align: center;
-	white-space: nowrap;
-	vertical-align: middle;
-	cursor: pointer;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	background-image: none;
-	border: 1px solid transparent;
-	border-radius: 4px;
-
-	color: #fff;
-	background-color: #f0ad4e;
-	border-color: #eea236;
+	background: url("../img/BTN_Spin.png") scroll 0 0 transparent;
+	border: 0px solid transparent;
+	width: 51px;
+    height: 51px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    font-size: 1px;
 }
 
-@media all and (orientation: landscape) {
-  	.game-scene {
-		background-color: #aaffcc;
-		/*height: 100%;
-		width: 57%;*/
-	}
-
-	/*.game-controls {
-		height: 100%;
-		width: 40%;
-	}*/
+button:focus {
+    outline: none;
 }
 
-@media all and (orientation: portrait) {
-  	.game-scene {
-		background-color: #55ffcc;
-		/*width: 100%;
-		height: 50%;*/
+@media only all and (min-device-width: 481px) {
+	.game-scene .spin img {
+		transform: scale(1.7);
+	    -webkit-transform: scale(1.7);
+	    -o-transform: scale(1.7);
+	    -moz-transform: scale(1.7);
+	}
+}
+
+@media only all and (max-device-width: 480px) {
+	.game-scene {
+		width: 480px;
+		height: 320px;
+		top: 0;
+		left: 0;
+		border-radius: 0px;
+		box-shadow: 0;
 	}
 
-	/*.game-controls {
-		width: 100%;
-		height: 100%;
-		margin-top: 10px;
-	}*/
+	.game-controls {
+		width: 480px;
+		height: 320px;
+		top: 0;
+		left: 0;
+		border-radius: 0px;
+	}
+
+	.win-animation {
+		line-height: 30px;
+		margin-top: 80px;
+	}
+
+	.components {
+		bottom: 30px;
+	}
+	
+	.game-scene .spin {
+		height: 78px;
+	}
+
+	.game-scene .spin .slot li{
+		width: 148px;
+		height: 78px;
+		line-height: 78px;
+	}
 }

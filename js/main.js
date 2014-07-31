@@ -6,6 +6,10 @@
     gameSlotC: document.getElementById("gameSlotCenter"),
     gameSlotR: document.getElementById("gameSlotRight"),
     gameScene: document.getElementById("gameView"),
+    gameControls: document.getElementById("gameControls"),
+    selectedResult: document.getElementById("selectedResult"),
+    spinButton: document.getElementById("spinButton"),
+    spinWheel: document.getElementById("spinWheel"),
     list: document.getElementById("symbolSelectionList"),
     winAnimation: document.getElementById("winWin"),
     init: function() {
@@ -15,12 +19,21 @@
       document.addEventListener('loseEvent', this.showLose);
     },
 
-    eventListeneter: function(element, type, callback) {
+    AddAnimationEventListener: function(element, type, callback) {
         var pfx = ["webkit", "moz", "MS", "o", ""];
         for (var p = 0; p < pfx.length; p++) {
           if (!pfx[p]) type = type.toLowerCase();
 
           element.addEventListener(pfx[p] + type, callback, false);
+        }
+    },
+
+    RemoveAnimationEventListener: function(element, type, callback) {
+        var pfx = ["webkit", "moz", "MS", "o", ""];
+        for (var p = 0; p < pfx.length; p++) {
+          if (!pfx[p]) type = type.toLowerCase();
+
+          element.removeEventListener(pfx[p] + type, callback, false);
         }
     },
 
@@ -30,17 +43,28 @@
     },
 
     showWin: function(e) {
-      GameView.eventListeneter(GameView.winAnimation, 'AnimationEnd', function() {
-        GameView.winAnimation.className = "winwin fadeOut animated";
-      }, false);
+      var handler = function() {
+        GameView.RemoveAnimationEventListener(GameView.gameControls, 'AnimationEnd', handler, false);
+        console.log("win animation end");
+        GameView.winAnimation.innerHTML = 'You Win!';
+        GameView.winAnimation.className = "win-animation tada animated";
+      };
 
-      GameView.winAnimation.className = "winwin tada animated";
-
-      GameView.winAnimation.innerHTML = 'You Win!';
+      GameView.AddAnimationEventListener(GameView.gameControls, 'AnimationEnd', handler, false);
+      GameView.gameControls.className = "game-controls fadeInDelayed animated";
     },
 
     showLose: function(e) {
-      GameView.winAnimation.innerHTML = 'You Lose! <br/> Spin the wheel!';
+
+      var handler = function() {
+        GameView.RemoveAnimationEventListener(GameView.gameControls, 'AnimationEnd', handler, false);
+        console.log("lose animation end");
+        GameView.winAnimation.innerHTML = "You Lose! <br /><span style='font-size:20px'>Spin the wheel!</span>";
+        GameView.winAnimation.className = "win-animation wobble animated";
+      }
+
+      GameView.AddAnimationEventListener(GameView.gameControls, 'AnimationEnd', handler, false);
+      GameView.gameControls.className = "game-controls fadeInDelayed animated";
     },
 
     updateSelectList:function(e) {
@@ -125,6 +149,7 @@
 
     selectSymbol: function(event) {
       this.userSelection = GameModel.get()[parseInt(event-1)];
+      GameView.selectedResult.src = this.userSelection.image;
       this.magic = [];
       var leng = 100;
       for(var i = 0; i < leng; i++) {
@@ -141,6 +166,7 @@
       if( !elem) return;
       var numOfLoops = 3;
       var callbackHandler = callback;
+      var slotHeight = parseInt(window.getComputedStyle(GameView.spinWheel, null).getPropertyValue("height")) * -1;
 
       function doOneRotation (endCallback) 
       {
@@ -172,27 +198,27 @@
         var interval1 = setInterval( function() 
                                     {
                                       var step = Math.min(1, (new Date().getTime() - start) / finishTime1);
-                                      elem[0].style[style] = (from + step * ((parseInt(finish[0]) * -155) - from)) + unit;
+                                      elem[0].style[style] = (from + step * ((parseInt(finish[0]) * slotHeight) - from)) + unit;
                                       if(step == 1) { 
                                         clearInterval(interval1);
-                                        callbackHandler();
+                                        // callbackHandler();
                                       }
                                     }, 20);
 
         var interval2 = setInterval( function() 
                                     {
                                       var step = Math.min(1, (new Date().getTime() - start) / finishTime2);
-                                      elem[1].style[style] = (from + step * ((parseInt(finish[1]) * -155) - from)) + unit;
+                                      elem[1].style[style] = (from + step * ((parseInt(finish[1]) * slotHeight) - from)) + unit;
                                       if(step == 1) { 
                                         clearInterval(interval2);
-                                        callbackHandler();
+                                        // callbackHandler();
                                       }
                                     }, 20);
 
         var interval3 = setInterval( function() 
                                     {
                                       var step = Math.min(1, (new Date().getTime() - start) / finishTime3);
-                                      elem[2].style[style] = (from + step * ((parseInt(finish[2]) * -155) - from)) + unit;
+                                      elem[2].style[style] = (from + step * ((parseInt(finish[2]) * slotHeight) - from)) + unit;
                                       if(step == 1) { 
                                         clearInterval(interval3);
                                         callbackHandler();
@@ -229,36 +255,45 @@
       }
     },
 
-    spin: function() {
-      var index1 = Math.round(Math.random() * 99);
-      var index2 = Math.round(Math.random() * 99);
-      var index3 = Math.round(Math.random() * 99);
-      var isWin1 = this.randomize(this.magic)[index1];
-      var isWin2 = this.randomize(this.magic)[index2];
-      var isWin3 = this.randomize(this.magic)[index3];
+    spinWheel: function() {
+      var self = this;
+      var slotHeight = parseInt(window.getComputedStyle(GameView.spinWheel, null).getPropertyValue("height")) * -1;
+      var index1 = Math.round(Math.random() * 99),
+          index2 = Math.round(Math.random() * 99),
+          index3 = Math.round(Math.random() * 99),
+          isWin1 = this.randomize(this.magic)[index1],
+          isWin2 = this.randomize(this.magic)[index2],
+          isWin3 = this.randomize(this.magic)[index3];
 
-      this.from = function() { return GameModel.get().length * -155 };
+      console.log(isWin1, isWin2, isWin3);
 
-      console.log(isWin1, isWin2, isWin3)
-      
-      this.animate(
-          [GameView.gameSlotL, GameView.gameSlotC, GameView.gameSlotR], "top", "px", 
-          this.from(), 0, 200, 
-          [this.getEndSpinElement(isWin1), this.getEndSpinElement(isWin2), this.getEndSpinElement(isWin3)],
-          function() {
-            if(isWin1 == 1 && isWin2 == 1 ||
-              isWin2 == 1 && isWin3 == 1 ||
-              isWin3 == 1 && isWin1 == 1 ||
-              isWin1 == 1 && isWin2 == 1 && isWin3 == 1)
-            {
-              document.dispatchEvent(new CustomEvent("winEvent"));
-            } else {
-              document.dispatchEvent(new CustomEvent("loseEvent"));
-            }
-              
-          }
-      );
-      
+      GameView.spinButton.className = "btn rotation";
+
+      var handler = function() {
+        GameView.RemoveAnimationEventListener(GameView.gameControls, 'AnimationEnd', handler, false);
+        GameView.winAnimation.innerHTML = '<br />';
+        GameView.winAnimation.className = "win-animation";
+        GameView.spinButton.className = "btn";
+
+        self.animate(
+            [GameView.gameSlotL, GameView.gameSlotC, GameView.gameSlotR], "top", "px", 
+            GameModel.get().length * slotHeight, 0, 200, 
+            [self.getEndSpinElement(isWin1), self.getEndSpinElement(isWin2), self.getEndSpinElement(isWin3)],
+            function() {
+              if(isWin1 == 1 && isWin2 == 1 ||
+                isWin2 == 1 && isWin3 == 1 ||
+                isWin3 == 1 && isWin1 == 1 ||
+                isWin1 == 1 && isWin2 == 1 && isWin3 == 1)
+              {
+                document.dispatchEvent(new CustomEvent("winEvent"));
+              } else {
+                document.dispatchEvent(new CustomEvent("loseEvent"));
+              }
+            });
+      }
+
+      GameView.AddAnimationEventListener(GameView.gameControls, 'AnimationEnd', handler, false);
+      GameView.gameControls.className = "game-controls fadeOut animated";
     },
 
     randomize: function(array) {
