@@ -2,12 +2,12 @@
 
   var GameView = {
     preloader: document.getElementById("preloader"),
-    gameSlotL: document.getElementById("game-slot1"),
-    gameSlotC: document.getElementById("game-slot2"),
-    gameSlotR: document.getElementById("game-slot3"),
-    gameScene: document.getElementById("game-scene"),
+    gameSlotL: document.getElementById("gameSlotLeft"),
+    gameSlotC: document.getElementById("gameSlotCenter"),
+    gameSlotR: document.getElementById("gameSlotRight"),
+    gameScene: document.getElementById("gameView"),
     list: document.getElementById("symbolSelectionList"),
-    winAnimation: document.getElementById("winwin"),
+    winAnimation: document.getElementById("winWin"),
     init: function() {
       document.addEventListener('updateSelectList', this.updateSelectList);
       document.addEventListener('allImagesLoaded', this.showGameScene);
@@ -15,11 +15,27 @@
       document.addEventListener('loseEvent', this.showLose);
     },
 
+    eventListeneter: function(element, type, callback) {
+        var pfx = ["webkit", "moz", "MS", "o", ""];
+        for (var p = 0; p < pfx.length; p++) {
+          if (!pfx[p]) type = type.toLowerCase();
+
+          element.addEventListener(pfx[p] + type, callback, false);
+        }
+    },
+
     showGameScene: function(e) {
-      GameView.gameScene.className = 'view-game';
+      GameView.preloader.className = 'hidden';
+      GameView.gameScene.className = 'view-game fadeIn animated';
     },
 
     showWin: function(e) {
+      GameView.eventListeneter(GameView.winAnimation, 'AnimationEnd', function() {
+        GameView.winAnimation.className = "winwin fadeOut animated";
+      }, false);
+
+      GameView.winAnimation.className = "winwin tada animated";
+
       GameView.winAnimation.innerHTML = 'You Win!';
     },
 
@@ -222,6 +238,8 @@
       var isWin3 = this.randomize(this.magic)[index3];
 
       this.from = function() { return GameModel.get().length * -155 };
+
+      console.log(isWin1, isWin2, isWin3)
       
       this.animate(
           [GameView.gameSlotL, GameView.gameSlotC, GameView.gameSlotR], "top", "px", 

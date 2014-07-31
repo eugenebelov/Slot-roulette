@@ -14,35 +14,41 @@
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/animation.css">
         <link rel="stylesheet" href="css/game.css">
+        <link rel="stylesheet" href="css/bootstrap/bootstrap.css">
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <div id="preloader" class="preloader show">preloader</div>
-        <div id="game-scene" class="view-game-hidden">
+        <div id="preloader" class="preloader show">
+            Loading...
+        </div>
+
+        <div id="gameView" class="view-game hidden">
             <div class="game-scene">
                 <div class="container">
                     <div class="spin">
-                        <ul class="slot" id="game-slot1">
-                        </ul>
-                        <ul class="slot" id="game-slot2">
-                        </ul>
-                        <ul class="slot" id="game-slot3">
-                        </ul>
+                        <ul class="slot" id="gameSlotLeft"></ul>
+                        <ul class="slot" id="gameSlotCenter"></ul>
+                        <ul class="slot" id="gameSlotRight"></ul>
                     </div>
-                </div>  
+                </div>
             </div>
+
             <div class="game-controls">
-                <div class="winwin" id="winwin">Spin the wheel!</div>
                 <div class="controls">
+                    <div class="winAnimation" id="winWin">
+                        Spin the wheel!
+                    </div>
+
                     <select name="symbolSelection" id="symbolSelectionList" class="drop-down" 
                             onchange="Game.selectSymbol(this.value)">
-                        
                     </select>
-                    <button label="spin" onclick="Game.spin()">Spin</button>
+
+                    <button label="spin" class="btn" onclick="Game.spin()">Spin</button>
                 </div>
             </div>
         </div>
