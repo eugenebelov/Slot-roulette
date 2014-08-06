@@ -36,6 +36,8 @@ body, html {
 	top: 25%;
 	background-color: #9A3334;
 	border-radius: 5px;
+
+	/*opacity: 0.3;*/
 }
 
 .game-scene {

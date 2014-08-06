@@ -29,20 +29,23 @@
         <div id="gameView" class="view-game hidden">
             <div class="game-scene">
                 <div class="spinContainer">
-                    <!-- <div id="spinWheel" class="spin">
+                    <canvas id="gameSceneCanvas" width="200px" height="200px"></canvas>
+                    <div id="spinWheel" class="spin">
                         <ul class="slot" id="gameSlotLeft"></ul>
                         <ul class="slot" id="gameSlotCenter"></ul>
                         <ul class="slot" id="gameSlotRight"></ul>
-                    </div> -->
-                    <canvas id="myCanvas" width="578" height="400"></canvas>
+                    </div>
                 </div>
             </div>
 
             <div id="gameControls" class="game-controls">
                 <div class="controlsContainer">
+                    <canvas id="gameWinCanvas" width="300px" height="100px"></canvas>
+
                     <div class="win-animation" id="winWin">
                         Spin the wheel!
                     </div>
+                    
                     <div class="components">
                         <img src="" alt="" id="selectedResult" />
 

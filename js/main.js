@@ -2,6 +2,9 @@
 
   var GameView = {
     preloader: document.getElementById("preloader"),
+    gameSceneContext: document.getElementById('gameSceneCanvas').getContext('2d'),
+    gameWinCanvas: document.getElementById('gameWinCanvas'),
+    gameWinContext: document.getElementById('gameWinCanvas').getContext('2d'),
     gameSlotL: document.getElementById("gameSlotLeft"),
     gameSlotC: document.getElementById("gameSlotCenter"),
     gameSlotR: document.getElementById("gameSlotRight"),
@@ -42,12 +45,28 @@
       GameView.gameScene.className = 'view-game fadeIn animated';
     },
 
+    drawCanvasText: function(text) {
+      GameView.gameWinContext.shadowColor = '#000000';
+      GameView.gameWinContext.shadowBlur = 2;
+      GameView.gameWinContext.shadowOffsetX = 1;
+      GameView.gameWinContext.shadowOffsetY = 1;
+
+      GameView.gameWinContext.fillStyle = '#F3EFE0';
+      GameView.gameWinContext.font = "bold 40pt Calibri";
+      GameView.gameWinContext.fillText(text, 50, 50);
+    },
+
     showWin: function(e) {
       var handler = function() {
         GameView.RemoveAnimationEventListener(GameView.gameControls, 'AnimationEnd', handler, false);
-        console.log("win animation end");
-        GameView.winAnimation.innerHTML = 'You Win!';
-        GameView.winAnimation.className = "win-animation tada animated";
+        console.log("win animation end");        
+        
+        GameView.drawCanvasText('You Win!');
+
+        GameView.gameWinCanvas.className = "tada animated";
+
+        // GameView.winAnimation.innerHTML = 'You Win!';
+        // GameView.winAnimation.className = "win-animation tada animated";
       };
 
       GameView.AddAnimationEventListener(GameView.gameControls, 'AnimationEnd', handler, false);
