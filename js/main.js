@@ -2,9 +2,8 @@
 
   var GameView = {
     preloader: document.getElementById("preloader"),
+    sceneCanvas: document.getElementById('gameSceneCanvas'),
     gameSceneContext: document.getElementById('gameSceneCanvas').getContext('2d'),
-    gameWinCanvas: document.getElementById('gameWinCanvas'),
-    gameWinContext: document.getElementById('gameWinCanvas').getContext('2d'),
     gameSlotL: document.getElementById("gameSlotLeft"),
     gameSlotC: document.getElementById("gameSlotCenter"),
     gameSlotR: document.getElementById("gameSlotRight"),
@@ -15,6 +14,24 @@
     spinWheel: document.getElementById("spinWheel"),
     list: document.getElementById("symbolSelectionList"),
     winAnimation: document.getElementById("winWin"),
+
+    slotInCanvasLeft: {
+      x: 0,
+      y: 100,
+      posX: 0,
+      posY: 0
+    },
+
+    slotInCanvasCenter: {
+      x: 200,
+      y: 0,
+    },
+
+    slotInCanvasRight: {
+      x: 400,
+      y: 0,
+    },
+
     init: function() {
       document.addEventListener('updateSelectList', this.updateSelectList);
       document.addEventListener('allImagesLoaded', this.showGameScene);
@@ -43,30 +60,25 @@
     showGameScene: function(e) {
       GameView.preloader.className = 'hidden';
       GameView.gameScene.className = 'view-game fadeIn animated';
-    },
 
-    drawCanvasText: function(text) {
-      GameView.gameWinContext.shadowColor = '#000000';
-      GameView.gameWinContext.shadowBlur = 2;
-      GameView.gameWinContext.shadowOffsetX = 1;
-      GameView.gameWinContext.shadowOffsetY = 1;
+      var container = document.getElementById("spinContainer");
 
-      GameView.gameWinContext.fillStyle = '#F3EFE0';
-      GameView.gameWinContext.font = "bold 40pt Calibri";
-      GameView.gameWinContext.fillText(text, 50, 50);
+      GameView.canvasWidth = window.getComputedStyle(container, null).width;
+      GameView.canvasHeight = window.getComputedStyle(container, null).height;
+
+      GameView.sceneCanvas.setAttribute('width', window.getComputedStyle(container, null).width);
+      GameView.sceneCanvas.setAttribute('height', window.getComputedStyle(container, null).height);
+
+      document.dispatchEvent(new CustomEvent("updateSelectList"));
     },
 
     showWin: function(e) {
       var handler = function() {
         GameView.RemoveAnimationEventListener(GameView.gameControls, 'AnimationEnd', handler, false);
         console.log("win animation end");        
-        
-        GameView.drawCanvasText('You Win!');
 
-        GameView.gameWinCanvas.className = "tada animated";
-
-        // GameView.winAnimation.innerHTML = 'You Win!';
-        // GameView.winAnimation.className = "win-animation tada animated";
+        GameView.winAnimation.innerHTML = 'You Win!';
+        GameView.winAnimation.className = "win-animation tada animated";
       };
 
       GameView.AddAnimationEventListener(GameView.gameControls, 'AnimationEnd', handler, false);
@@ -78,6 +90,7 @@
       var handler = function() {
         GameView.RemoveAnimationEventListener(GameView.gameControls, 'AnimationEnd', handler, false);
         console.log("lose animation end");
+
         GameView.winAnimation.innerHTML = "You Lose! <br /><span style='font-size:20px'>Spin the wheel!</span>";
         GameView.winAnimation.className = "win-animation wobble animated";
       }
@@ -87,18 +100,28 @@
     },
 
     updateSelectList:function(e) {
-      var ulNodes = [];
       GameView.list = document.getElementById("symbolSelectionList");
       GameModel.get().forEach(function(obj, index) {
         GameView.list[index] = new Option(obj.title, obj.value);
-        ulNodes.push("<li><img src=" + obj.image + " /></li>");
+        
+        GameView.slotInCanvasLeft.y = GameView.slotInCanvasCenter.y = GameView.slotInCanvasRight.y = index * 60;
+        
+        GameView.gameSceneContext.drawImage(GameModel.getImages()[index], 
+                                              GameView.slotInCanvasLeft.x, 
+                                                GameView.slotInCanvasLeft.y + GameView.slotInCanvasLeft.posY);
+        GameView.gameSceneContext.drawImage(GameModel.getImages()[index], 
+                                              GameView.slotInCanvasCenter.x, 
+                                                GameView.slotInCanvasCenter.y);
+        GameView.gameSceneContext.drawImage(GameModel.getImages()[index], 
+                                              GameView.slotInCanvasRight.x, 
+                                                GameView.slotInCanvasRight.y);
       });
-
-      GameView.gameSlotL.innerHTML = ulNodes.join('');
-      GameView.gameSlotC.innerHTML = ulNodes.join('');
-      GameView.gameSlotR.innerHTML = ulNodes.join('');
+      
       Game.selectSymbol(GameView.list[0].value);
+
+      Game.gameLoop();
     }
+
   };
 
   var GameModel = {
@@ -124,8 +147,6 @@
     fill: function(data) {
       GameModel.set(JSON.parse(data).types);
       GameModel.loadImage(JSON.parse(data).types);
-
-      document.dispatchEvent(new CustomEvent("updateSelectList"));
     },
 
     loadImage: function(data) {
@@ -141,6 +162,7 @@
           count++;
           if(count == i) {
             GameView.preloader.style.width = '100%';
+            GameModel.setImages(images);
 
             document.dispatchEvent(new CustomEvent("allImagesLoaded"));
           } else {
@@ -158,12 +180,111 @@
 
     get: function() {
       return this.gameTypesList;
+    },
+
+    setImages: function(images) {
+      this.imageScope = images;
+    },
+
+    getImages: function() {
+      return this.imageScope;
     }
   };
 
   window.Game = {
     start: function () {
       GameModel.fetch("./js/fake/fake-data.json", GameModel.fill);
+    },
+
+    update: function (modifier) {
+      // if(GameView.slotInCanvasLeft.y >= 200) {
+      //   GameView.slotInCanvasLeft.y = 0;
+      // }
+
+      GameView.slotInCanvasLeft.y = modifier;
+
+      console.log(GameView.slotInCanvasLeft.y)
+    },
+
+    render: function (coords) {
+      // var now = Date.now();
+      // var delta = now - then;
+
+      Game.update(coords);
+
+      // then = now;
+
+      GameView.gameSceneContext.clearRect(0, 0, parseInt(GameView.canvasWidth), parseInt(GameView.canvasHeight));
+
+      /// use save when using clip Path
+      GameView.gameSceneContext.save();
+
+      GameView.gameSceneContext.beginPath();
+      GameView.gameSceneContext.moveTo(0, 0);
+      GameView.gameSceneContext.lineTo(0, 80);
+      GameView.gameSceneContext.lineTo(150, 80);
+      GameView.gameSceneContext.lineTo(150, 0);
+
+      GameView.gameSceneContext.closePath();
+
+      /// define this Path as clipping mask
+      GameView.gameSceneContext.clip();
+
+      /// draw the image
+
+      GameModel.get().forEach(function(obj, index) {
+        GameView.gameSceneContext.drawImage(GameModel.getImages()[index], 
+                                              GameView.slotInCanvasLeft.x, 
+                                                GameView.slotInCanvasLeft.y + (GameView.slotInCanvasLeft.posY + index * 80));
+      });
+
+      /// reset clip to default
+      GameView.gameSceneContext.restore();
+    },
+
+    gameLoop: function() {
+      console.log("game loop");
+
+      // var now = Date.now();
+      // var delta = now - then;
+
+      // Game.update(delta / 1000);
+      // Game.render();
+
+      // then = now;
+
+      // requestAnimationFrame(Game.gameLoop);
+      // setInterval(Game.render, 700);
+
+      var from = -400;
+      var to = 0;
+
+      var numOfLoops = 3;
+      function doOneRotation (endCallback) 
+      {
+        var start = new Date().getTime();
+        var interval = setInterval( function(){
+                                    var step = Math.min(1, (new Date().getTime() - start) / 700);
+
+                                    console.log("interval1", from + step * (to - from));
+                                    Game.render(from + step * (to - from))
+
+                                    if(step == 1)
+                                    {
+                                      endCallback();
+                                      clearInterval(interval);
+                                    }
+                                  }, 20);
+      }
+
+      function whatNext()
+      {
+        console.log(numOfLoops)
+        numOfLoops--;
+        (numOfLoops > 0) ? doOneRotation(whatNext) : console.log("finish");
+      }
+
+      doOneRotation(whatNext);
     },
 
     selectSymbol: function(event) {
@@ -321,6 +442,10 @@
         });
     }
   }
+
+  var then = Date.now();
+  var w = window;
+  requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame;
 
   Game.start();
   GameView.init();

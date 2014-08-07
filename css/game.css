@@ -32,12 +32,10 @@ body, html {
 	position: absolute;
 	width: 50%;
 	height: 50%;
-	left: 25%;
-	top: 25%;
+	/*left: 25%;*/
+	/*top: 25%;*/
 	background-color: #9A3334;
 	border-radius: 5px;
-
-	/*opacity: 0.3;*/
 }
 
 .game-scene {
@@ -48,8 +46,8 @@ body, html {
 	background-color: #217C7E;
 	width: 50%;
 	height: 50%;
-	left: 25%;
-	top: 25%;
+	left: 50%; /* 25% */
+	/*top: 25%;*/
 	box-shadow: 0 0 10px;
 	border-radius: 5px;
 }
