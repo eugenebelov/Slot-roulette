@@ -16,24 +16,52 @@
     winAnimation: document.getElementById("winWin"),
 
     slotInCanvasLeft: {
-      x: 0,
-      y: 100,
-      posX: 0,
-      posY: 0
+      x: 0, y: 0,
+      posX: 0, posY: 0,
+      render: function (content) {
+        GameView.gameSceneContext.drawImage(content, 
+                                              this.x, 
+                                                this.y + this.posY);
+      }
     },
 
     slotInCanvasCenter: {
-      x: 200,
-      y: 0,
+      x: 150, y: 0,
+      posX: 0, posY: 0,
+      render: function (content) {
+        GameView.gameSceneContext.drawImage(content, 
+                                              this.x, 
+                                                this.y + this.posY);
+      }
     },
 
     slotInCanvasRight: {
-      x: 400,
-      y: 0,
+      x: 300, y: 0,
+      posX: 0, posY: 0,
+      render: function (content) {
+        GameView.gameSceneContext.drawImage(content, 
+                                              this.x, 
+                                                this.y + this.posY);
+      }
+    },
+
+    resetCanvas: function() {
+      this.gameSceneContext.clearRect(0, 0, parseInt(this.canvasWidth), parseInt(this.canvasHeight));
+    },
+
+    doMask: function() { 
+      this.gameSceneContext.save();
+      this.gameSceneContext.beginPath();
+      this.gameSceneContext.moveTo(0, 0);
+      this.gameSceneContext.lineTo(0, 80);
+      this.gameSceneContext.lineTo(420, 80);
+      this.gameSceneContext.lineTo(420, 0);
+      this.gameSceneContext.closePath();
+      this.gameSceneContext.clip();
     },
 
     init: function() {
-      document.addEventListener('updateSelectList', this.updateSelectList);
+      document.addEventListener('updateSelectList', this.updateSelectList.bind(this) );
       document.addEventListener('allImagesLoaded', this.showGameScene);
       document.addEventListener('winEvent', this.showWin);
       document.addEventListener('loseEvent', this.showLose);
@@ -100,26 +128,25 @@
     },
 
     updateSelectList:function(e) {
-      GameView.list = document.getElementById("symbolSelectionList");
-      GameModel.get().forEach(function(obj, index) {
-        GameView.list[index] = new Option(obj.title, obj.value);
-        
-        GameView.slotInCanvasLeft.y = GameView.slotInCanvasCenter.y = GameView.slotInCanvasRight.y = index * 60;
-        
-        GameView.gameSceneContext.drawImage(GameModel.getImages()[index], 
-                                              GameView.slotInCanvasLeft.x, 
-                                                GameView.slotInCanvasLeft.y + GameView.slotInCanvasLeft.posY);
-        GameView.gameSceneContext.drawImage(GameModel.getImages()[index], 
-                                              GameView.slotInCanvasCenter.x, 
-                                                GameView.slotInCanvasCenter.y);
-        GameView.gameSceneContext.drawImage(GameModel.getImages()[index], 
-                                              GameView.slotInCanvasRight.x, 
-                                                GameView.slotInCanvasRight.y);
-      });
-      
-      Game.selectSymbol(GameView.list[0].value);
+      this.list = document.getElementById("symbolSelectionList");
+      this.doMask();
 
-      Game.gameLoop();
+      GameModel.get().forEach(function(obj, index) {
+        this.list[index] = new Option(obj.title, obj.value);
+        
+        this.slotInCanvasLeft.y = 
+          this.slotInCanvasCenter.y = 
+            this.slotInCanvasRight.y = index * 80;
+        
+        this.slotInCanvasLeft.render(GameModel.getImages()[index]);
+        this.slotInCanvasCenter.render(GameModel.getImages()[index]);
+        this.slotInCanvasRight.render(GameModel.getImages()[index]);
+
+      }.bind(this));
+      
+      this.gameSceneContext.restore();
+
+      Game.selectSymbol(this.list[0].value);
     }
 
   };
@@ -408,6 +435,8 @@
       console.log(isWin1, isWin2, isWin3);
 
       GameView.spinButton.className = "btn rotation";
+
+      Game.gameLoop();
 
       var handler = function() {
         GameView.RemoveAnimationEventListener(GameView.gameControls, 'AnimationEnd', handler, false);
