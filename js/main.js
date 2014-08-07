@@ -17,30 +17,30 @@
 
     slotInCanvasLeft: {
       x: 0, y: 0,
-      posX: 0, posY: 0,
+      posX: 50, posY: 50,
       render: function (content) {
         GameView.gameSceneContext.drawImage(content, 
-                                              this.x, 
+                                              this.x + this.posX, 
                                                 this.y + this.posY);
       }
     },
 
     slotInCanvasCenter: {
       x: 150, y: 0,
-      posX: 0, posY: 0,
+      posX: 50, posY: 50,
       render: function (content) {
         GameView.gameSceneContext.drawImage(content, 
-                                              this.x, 
+                                              this.x + this.posX, 
                                                 this.y + this.posY);
       }
     },
 
     slotInCanvasRight: {
       x: 300, y: 0,
-      posX: 0, posY: 0,
+      posX: 50, posY: 50,
       render: function (content) {
         GameView.gameSceneContext.drawImage(content, 
-                                              this.x, 
+                                              this.x + this.posX, 
                                                 this.y + this.posY);
       }
     },
@@ -53,13 +53,13 @@
       this.gameSceneContext.clearRect(fromX, fromY, toX, parseInt(this.canvasHeight));
     },
 
-    doMask: function() { 
+    doMask: function(offset) { 
       this.gameSceneContext.save();
       this.gameSceneContext.beginPath();
-      this.gameSceneContext.moveTo(0, 0);
-      this.gameSceneContext.lineTo(0, 80);
-      this.gameSceneContext.lineTo(420, 80);
-      this.gameSceneContext.lineTo(420, 0);
+      this.gameSceneContext.moveTo(0 + offset, 0 + offset);
+      this.gameSceneContext.lineTo(0 + offset, 80 + offset);
+      this.gameSceneContext.lineTo(420 + offset, 80 + offset);
+      this.gameSceneContext.lineTo(420 + offset, 0 + offset);
       this.gameSceneContext.closePath();
       this.gameSceneContext.clip();
     },
@@ -136,10 +136,11 @@
 
       GameModel.get().forEach(function(obj, index) {
         this.list[index] = new Option(obj.title, obj.value);
-
       }.bind(this));
     
-      Game.render(0);      
+      GameView.resetCanvas();
+
+      Game.render([0, 0, 0], [true, true, true]);      
 
       Game.selectSymbol(this.list[0].value);
     }
@@ -218,19 +219,24 @@
       GameModel.fetch("./js/fake/fake-data.json", GameModel.fill);
     },
 
-    render: function (coords) {
-      GameView.resetCanvas();
-      GameView.doMask();
+    render: function (coords, slots) {
+      GameView.doMask(50);
 
       GameModel.get().forEach(function(obj, index) {
 
-        GameView.slotInCanvasLeft.y = coords + index * 80;
-        GameView.slotInCanvasCenter.y = coords + index * 80;
-        GameView.slotInCanvasRight.y = coords + index * 80;
+        if(slots[0] == true) {
+          GameView.slotInCanvasLeft.y = coords[0] + index * 80;
+          GameView.slotInCanvasLeft.render(GameModel.getImages()[index]);
+        } 
+        if(slots[1] == true) {
+          GameView.slotInCanvasCenter.y = coords[1] + index * 80;
+          GameView.slotInCanvasCenter.render(GameModel.getImages()[index]);
+        } 
+        if(slots[2] == true) {
+          GameView.slotInCanvasRight.y = coords[2] + index * 80;
+          GameView.slotInCanvasRight.render(GameModel.getImages()[index]);
+        } 
 
-        GameView.slotInCanvasLeft.render(GameModel.getImages()[index]);
-        GameView.slotInCanvasCenter.render(GameModel.getImages()[index]);
-        GameView.slotInCanvasRight.render(GameModel.getImages()[index]);
       });
 
       GameView.gameSceneContext.restore();
@@ -249,7 +255,10 @@
               function() {
                 var step = Math.min(1, (new Date().getTime() - start) / 200);
 
-                Game.render(from + step * (to - from));
+                GameView.resetCanvas();
+                Game.render([from + step * (to - from),
+                                from + step * (to - from),
+                                    from + step * (to - from)], [true, true, true]);
 
                 if(step == 1)
                 {
@@ -268,24 +277,16 @@
               slotCY = 0,
               slotRY = 0;
 
-          var finishTime1 = (itemsLength - finishItemIndex[0]) * (500 / (itemsLength - finishItemIndex[0]));
-          var finishTime2 = (itemsLength - finishItemIndex[1]) * (500 / (itemsLength - finishItemIndex[1]));
-          var finishTime3 = (itemsLength - finishItemIndex[2]) * (500 / (itemsLength - finishItemIndex[2]));
+          var finishTime1 = (itemsLength - finishItemIndex[0]) * (500 / (itemsLength - finishItemIndex[0])),
+              finishTime2 = (itemsLength - finishItemIndex[1]) * (500 / (itemsLength - finishItemIndex[1])),
+              finishTime3 = (itemsLength - finishItemIndex[2]) * (500 / (itemsLength - finishItemIndex[2]));
+
           var interval1 = setInterval( 
                 function() {
                   var step = Math.min(1, (new Date().getTime() - start) / finishTime1);
-
                   slotLY = from + step * ((parseInt(finishItemIndex[0]) * slotHeight) - from);
-
                   GameView.resetPartCanvas(0, 0, 150);
-                  GameView.doMask();
-
-                  GameModel.get().forEach(function(obj, index) {
-                    GameView.slotInCanvasLeft.y = slotLY + index * 80;
-                    GameView.slotInCanvasLeft.render(GameModel.getImages()[index]);
-                  });
-
-                  GameView.gameSceneContext.restore();
+                  Game.render([slotLY, 0, 0], [true, false, false]);
 
                   if(step == 1) { 
                     clearInterval(interval1);
@@ -295,18 +296,9 @@
           var interval2 = setInterval( 
                 function() {
                   var step = Math.min(1, (new Date().getTime() - start) / finishTime2);
-
                   slotCY = from + step * ((parseInt(finishItemIndex[1]) * slotHeight) - from);
-
                   GameView.resetPartCanvas(150, 0, 150);
-                  GameView.doMask();
-
-                  GameModel.get().forEach(function(obj, index) {
-                    GameView.slotInCanvasCenter.y = slotCY + index * 80;
-                    GameView.slotInCanvasCenter.render(GameModel.getImages()[index]);
-                  });
-
-                  GameView.gameSceneContext.restore();
+                  Game.render([0, slotCY, 0], [false, true, false]);
 
                   if(step == 1) { 
                     clearInterval(interval2);
@@ -316,18 +308,9 @@
           var interval3 = setInterval( 
                 function() {
                   var step = Math.min(1, (new Date().getTime() - start) / finishTime3);
-
                   slotRY = from + step * ((parseInt(finishItemIndex[2]) * slotHeight) - from);
-
                   GameView.resetPartCanvas(300, 0, 150);
-                  GameView.doMask();
-
-                  GameModel.get().forEach(function(obj, index) {
-                    GameView.slotInCanvasRight.y = slotRY + index * 80;
-                    GameView.slotInCanvasRight.render(GameModel.getImages()[index]);
-                  });
-
-                  GameView.gameSceneContext.restore();
+                  Game.render([0, 0, slotRY], [false, false, true]);
 
                   if(step == 1) { 
                     clearInterval(interval3);
