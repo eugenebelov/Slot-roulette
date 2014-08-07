@@ -13,7 +13,7 @@
 
     slotInCanvasLeft: {
       x: 0, y: 0,
-      posX: 50, posY: 50,
+      posX: 25, posY: 50,
       render: function (content) {
         GameView.gameSceneContext.drawImage(content, 
                                               this.x + this.posX, 
@@ -23,7 +23,7 @@
 
     slotInCanvasCenter: {
       x: 150, y: 0,
-      posX: 50, posY: 50,
+      posX: 25, posY: 50,
       render: function (content) {
         GameView.gameSceneContext.drawImage(content, 
                                               this.x + this.posX, 
@@ -33,7 +33,7 @@
 
     slotInCanvasRight: {
       x: 300, y: 0,
-      posX: 50, posY: 50,
+      posX: 25, posY: 50,
       render: function (content) {
         GameView.gameSceneContext.drawImage(content, 
                                               this.x + this.posX, 
@@ -49,13 +49,13 @@
       this.gameSceneContext.clearRect(fromX, fromY, toX, parseInt(this.canvasHeight));
     },
 
-    doMask: function(offset) { 
+    doMask: function(offsetX, offsetY) { 
       this.gameSceneContext.save();
       this.gameSceneContext.beginPath();
-      this.gameSceneContext.moveTo(0 + offset, 0 + offset);
-      this.gameSceneContext.lineTo(0 + offset, 80 + offset);
-      this.gameSceneContext.lineTo(420 + offset, 80 + offset);
-      this.gameSceneContext.lineTo(420 + offset, 0 + offset);
+      this.gameSceneContext.moveTo(0 + offsetX, 0 + offsetY);
+      this.gameSceneContext.lineTo(0 + offsetX, 80 + offsetY);
+      this.gameSceneContext.lineTo(420 + offsetX, 80 + offsetY);
+      this.gameSceneContext.lineTo(420 + offsetX, 0 + offsetY);
       this.gameSceneContext.closePath();
       this.gameSceneContext.clip();
     },
@@ -216,7 +216,7 @@
     },
 
     render: function (coords, slots) {
-      GameView.doMask(50);
+      GameView.doMask(25, 50);
 
       GameModel.get().forEach(function(obj, index) {
 
@@ -281,7 +281,7 @@
                 function() {
                   var step = Math.min(1, (new Date().getTime() - start) / finishTime1);
                   slotLY = from + step * ((parseInt(finishItemIndex[0]) * slotHeight) - from);
-                  GameView.resetPartCanvas(0, 0, 150);
+                  GameView.resetPartCanvas(0, 0, 200);
                   Game.render([slotLY, 0, 0], [true, false, false]);
 
                   if(step == 1) { 
@@ -293,7 +293,7 @@
                 function() {
                   var step = Math.min(1, (new Date().getTime() - start) / finishTime2);
                   slotCY = from + step * ((parseInt(finishItemIndex[1]) * slotHeight) - from);
-                  GameView.resetPartCanvas(150, 0, 150);
+                  GameView.resetPartCanvas(150, 0, 200);
                   Game.render([0, slotCY, 0], [false, true, false]);
 
                   if(step == 1) { 
@@ -305,7 +305,7 @@
                 function() {
                   var step = Math.min(1, (new Date().getTime() - start) / finishTime3);
                   slotRY = from + step * ((parseInt(finishItemIndex[2]) * slotHeight) - from);
-                  GameView.resetPartCanvas(300, 0, 150);
+                  GameView.resetPartCanvas(300, 0, 200);
                   Game.render([0, 0, slotRY], [false, false, true]);
 
                   if(step == 1) { 
@@ -356,9 +356,6 @@
 
     spinWheel: function() {
       var self = this;
-      var slotHeight = parseInt(window.getComputedStyle(GameView.spinWheel, null).getPropertyValue("height")) * -1;
-
-      console.log(slotHeight)
 
       var index1 = Math.round(Math.random() * 99),
           index2 = Math.round(Math.random() * 99),
@@ -377,7 +374,7 @@
         GameView.winAnimation.className = "win-animation";
         GameView.spinButton.className = "btn";
 
-        Game.animateCanvasSpin(6 * -80, 0, 3, 
+        Game.animateCanvasSpin(GameModel.get().length * -80, 0, 3, 
                 [self.getEndSpinElement(isWin1), 
                     self.getEndSpinElement(isWin2), 
                         self.getEndSpinElement(isWin3)],
