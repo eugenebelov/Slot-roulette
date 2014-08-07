@@ -49,6 +49,10 @@
       this.gameSceneContext.clearRect(0, 0, parseInt(this.canvasWidth), parseInt(this.canvasHeight));
     },
 
+    resetPartCanvas: function(fromX, fromY, toX) {
+      this.gameSceneContext.clearRect(fromX, fromY, toX, parseInt(this.canvasHeight));
+    },
+
     doMask: function() { 
       this.gameSceneContext.save();
       this.gameSceneContext.beginPath();
@@ -129,22 +133,13 @@
 
     updateSelectList:function(e) {
       this.list = document.getElementById("symbolSelectionList");
-      this.doMask();
 
       GameModel.get().forEach(function(obj, index) {
         this.list[index] = new Option(obj.title, obj.value);
-        
-        this.slotInCanvasLeft.y = 
-          this.slotInCanvasCenter.y = 
-            this.slotInCanvasRight.y = index * 80;
-        
-        this.slotInCanvasLeft.render(GameModel.getImages()[index]);
-        this.slotInCanvasCenter.render(GameModel.getImages()[index]);
-        this.slotInCanvasRight.render(GameModel.getImages()[index]);
 
       }.bind(this));
-      
-      this.gameSceneContext.restore();
+    
+      Game.render(0);      
 
       Game.selectSymbol(this.list[0].value);
     }
@@ -223,92 +218,128 @@
       GameModel.fetch("./js/fake/fake-data.json", GameModel.fill);
     },
 
-    update: function (modifier) {
-      // if(GameView.slotInCanvasLeft.y >= 200) {
-      //   GameView.slotInCanvasLeft.y = 0;
-      // }
-
-      GameView.slotInCanvasLeft.y = modifier;
-
-      console.log(GameView.slotInCanvasLeft.y)
-    },
-
     render: function (coords) {
-      // var now = Date.now();
-      // var delta = now - then;
-
-      Game.update(coords);
-
-      // then = now;
-
-      GameView.gameSceneContext.clearRect(0, 0, parseInt(GameView.canvasWidth), parseInt(GameView.canvasHeight));
-
-      /// use save when using clip Path
-      GameView.gameSceneContext.save();
-
-      GameView.gameSceneContext.beginPath();
-      GameView.gameSceneContext.moveTo(0, 0);
-      GameView.gameSceneContext.lineTo(0, 80);
-      GameView.gameSceneContext.lineTo(150, 80);
-      GameView.gameSceneContext.lineTo(150, 0);
-
-      GameView.gameSceneContext.closePath();
-
-      /// define this Path as clipping mask
-      GameView.gameSceneContext.clip();
-
-      /// draw the image
+      GameView.resetCanvas();
+      GameView.doMask();
 
       GameModel.get().forEach(function(obj, index) {
-        GameView.gameSceneContext.drawImage(GameModel.getImages()[index], 
-                                              GameView.slotInCanvasLeft.x, 
-                                                GameView.slotInCanvasLeft.y + (GameView.slotInCanvasLeft.posY + index * 80));
+
+        GameView.slotInCanvasLeft.y = coords + index * 80;
+        GameView.slotInCanvasCenter.y = coords + index * 80;
+        GameView.slotInCanvasRight.y = coords + index * 80;
+
+        GameView.slotInCanvasLeft.render(GameModel.getImages()[index]);
+        GameView.slotInCanvasCenter.render(GameModel.getImages()[index]);
+        GameView.slotInCanvasRight.render(GameModel.getImages()[index]);
       });
 
-      /// reset clip to default
       GameView.gameSceneContext.restore();
     },
 
-    gameLoop: function() {
-      console.log("game loop");
+    animateCanvasSpin: function(from, to, loops, finishItemIndex, callback) {
+      var callbackHandler = callback,
+          numOfLoops = loops,
+          slotHeight = -80,
+          interval = -1;
 
-      // var now = Date.now();
-      // var delta = now - then;
-
-      // Game.update(delta / 1000);
-      // Game.render();
-
-      // then = now;
-
-      // requestAnimationFrame(Game.gameLoop);
-      // setInterval(Game.render, 700);
-
-      var from = -400;
-      var to = 0;
-
-      var numOfLoops = 3;
-      function doOneRotation (endCallback) 
+      function doOneRotation(endCallback) 
       {
         var start = new Date().getTime();
-        var interval = setInterval( function(){
-                                    var step = Math.min(1, (new Date().getTime() - start) / 700);
+        var interval = setInterval( 
+              function() {
+                var step = Math.min(1, (new Date().getTime() - start) / 200);
 
-                                    console.log("interval1", from + step * (to - from));
-                                    Game.render(from + step * (to - from))
+                Game.render(from + step * (to - from));
 
-                                    if(step == 1)
-                                    {
-                                      endCallback();
-                                      clearInterval(interval);
-                                    }
-                                  }, 20);
+                if(step == 1)
+                {
+                  console.log("interval stop");
+                  endCallback();
+                  clearInterval(interval);
+                }
+              }, 20);
+      }
+
+      function doFinishRotation() 
+      {
+          var start = new Date().getTime(),
+              itemsLength = GameModel.get().length,
+              slotLY = 0,
+              slotCY = 0,
+              slotRY = 0;
+
+          var finishTime1 = (itemsLength - finishItemIndex[0]) * (500 / (itemsLength - finishItemIndex[0]));
+          var finishTime2 = (itemsLength - finishItemIndex[1]) * (500 / (itemsLength - finishItemIndex[1]));
+          var finishTime3 = (itemsLength - finishItemIndex[2]) * (500 / (itemsLength - finishItemIndex[2]));
+          var interval1 = setInterval( 
+                function() {
+                  var step = Math.min(1, (new Date().getTime() - start) / finishTime1);
+
+                  slotLY = from + step * ((parseInt(finishItemIndex[0]) * slotHeight) - from);
+
+                  GameView.resetPartCanvas(0, 0, 150);
+                  GameView.doMask();
+
+                  GameModel.get().forEach(function(obj, index) {
+                    GameView.slotInCanvasLeft.y = slotLY + index * 80;
+                    GameView.slotInCanvasLeft.render(GameModel.getImages()[index]);
+                  });
+
+                  GameView.gameSceneContext.restore();
+
+                  if(step == 1) { 
+                    clearInterval(interval1);
+                  }
+                }, 20);
+
+          var interval2 = setInterval( 
+                function() {
+                  var step = Math.min(1, (new Date().getTime() - start) / finishTime2);
+
+                  slotCY = from + step * ((parseInt(finishItemIndex[1]) * slotHeight) - from);
+
+                  GameView.resetPartCanvas(150, 0, 150);
+                  GameView.doMask();
+
+                  GameModel.get().forEach(function(obj, index) {
+                    GameView.slotInCanvasCenter.y = slotCY + index * 80;
+                    GameView.slotInCanvasCenter.render(GameModel.getImages()[index]);
+                  });
+
+                  GameView.gameSceneContext.restore();
+
+                  if(step == 1) { 
+                    clearInterval(interval2);
+                  }
+                }, 20);
+
+          var interval3 = setInterval( 
+                function() {
+                  var step = Math.min(1, (new Date().getTime() - start) / finishTime3);
+
+                  slotRY = from + step * ((parseInt(finishItemIndex[2]) * slotHeight) - from);
+
+                  GameView.resetPartCanvas(300, 0, 150);
+                  GameView.doMask();
+
+                  GameModel.get().forEach(function(obj, index) {
+                    GameView.slotInCanvasRight.y = slotRY + index * 80;
+                    GameView.slotInCanvasRight.render(GameModel.getImages()[index]);
+                  });
+
+                  GameView.gameSceneContext.restore();
+
+                  if(step == 1) { 
+                    clearInterval(interval3);
+                    callbackHandler();
+                  }
+                }, 20);
       }
 
       function whatNext()
       {
-        console.log(numOfLoops)
         numOfLoops--;
-        (numOfLoops > 0) ? doOneRotation(whatNext) : console.log("finish");
+        (numOfLoops > 0) ? doOneRotation(whatNext) : doFinishRotation();
       }
 
       doOneRotation(whatNext);
@@ -425,6 +456,9 @@
     spinWheel: function() {
       var self = this;
       var slotHeight = parseInt(window.getComputedStyle(GameView.spinWheel, null).getPropertyValue("height")) * -1;
+
+      console.log(slotHeight)
+
       var index1 = Math.round(Math.random() * 99),
           index2 = Math.round(Math.random() * 99),
           index3 = Math.round(Math.random() * 99),
@@ -432,11 +466,9 @@
           isWin2 = this.randomize(this.magic)[index2],
           isWin3 = this.randomize(this.magic)[index3];
 
-      console.log(isWin1, isWin2, isWin3);
+      console.log("spinWheel", isWin1, isWin2, isWin3);
 
       GameView.spinButton.className = "btn rotation";
-
-      Game.gameLoop();
 
       var handler = function() {
         GameView.RemoveAnimationEventListener(GameView.gameControls, 'AnimationEnd', handler, false);
@@ -444,21 +476,37 @@
         GameView.winAnimation.className = "win-animation";
         GameView.spinButton.className = "btn";
 
-        self.animate(
-            [GameView.gameSlotL, GameView.gameSlotC, GameView.gameSlotR], "top", "px", 
-            GameModel.get().length * slotHeight, 0, 200, 
-            [self.getEndSpinElement(isWin1), self.getEndSpinElement(isWin2), self.getEndSpinElement(isWin3)],
-            function() {
-              if(isWin1 == 1 && isWin2 == 1 ||
-                isWin2 == 1 && isWin3 == 1 ||
-                isWin3 == 1 && isWin1 == 1 ||
-                isWin1 == 1 && isWin2 == 1 && isWin3 == 1)
-              {
-                document.dispatchEvent(new CustomEvent("winEvent"));
-              } else {
-                document.dispatchEvent(new CustomEvent("loseEvent"));
-              }
-            });
+        Game.animateCanvasSpin(6 * -80, 0, 3, 
+                [self.getEndSpinElement(isWin1), 
+                    self.getEndSpinElement(isWin2), 
+                        self.getEndSpinElement(isWin3)],
+                function() {
+                    if(isWin1 == 1 && isWin2 == 1 ||
+                      isWin2 == 1 && isWin3 == 1 ||
+                      isWin3 == 1 && isWin1 == 1 ||
+                      isWin1 == 1 && isWin2 == 1 && isWin3 == 1)
+                    {
+                      document.dispatchEvent(new CustomEvent("winEvent"));
+                    } else {
+                      document.dispatchEvent(new CustomEvent("loseEvent"));
+                    }
+                  });
+
+        // self.animate(
+        //     [GameView.gameSlotL, GameView.gameSlotC, GameView.gameSlotR], "top", "px", 
+        //     GameModel.get().length * slotHeight, 0, 200, 
+        //     [self.getEndSpinElement(isWin1), self.getEndSpinElement(isWin2), self.getEndSpinElement(isWin3)],
+            // function() {
+            //   if(isWin1 == 1 && isWin2 == 1 ||
+            //     isWin2 == 1 && isWin3 == 1 ||
+            //     isWin3 == 1 && isWin1 == 1 ||
+            //     isWin1 == 1 && isWin2 == 1 && isWin3 == 1)
+            //   {
+            //     document.dispatchEvent(new CustomEvent("winEvent"));
+            //   } else {
+            //     document.dispatchEvent(new CustomEvent("loseEvent"));
+            //   }
+            // });
       }
 
       GameView.AddAnimationEventListener(GameView.gameControls, 'AnimationEnd', handler, false);
