@@ -4,14 +4,10 @@
     preloader: document.getElementById("preloader"),
     sceneCanvas: document.getElementById('gameSceneCanvas'),
     gameSceneContext: document.getElementById('gameSceneCanvas').getContext('2d'),
-    gameSlotL: document.getElementById("gameSlotLeft"),
-    gameSlotC: document.getElementById("gameSlotCenter"),
-    gameSlotR: document.getElementById("gameSlotRight"),
     gameScene: document.getElementById("gameView"),
     gameControls: document.getElementById("gameControls"),
     selectedResult: document.getElementById("selectedResult"),
     spinButton: document.getElementById("spinButton"),
-    spinWheel: document.getElementById("spinWheel"),
     list: document.getElementById("symbolSelectionList"),
     winAnimation: document.getElementById("winWin"),
 
@@ -343,84 +339,6 @@
       }
     },
 
-    animate: function(elem, style, unit, from, to, time, finish, callback) {
-      if( !elem) return;
-      var numOfLoops = 3;
-      var callbackHandler = callback;
-      var slotHeight = parseInt(window.getComputedStyle(GameView.spinWheel, null).getPropertyValue("height")) * -1;
-
-      function doOneRotation (endCallback) 
-      {
-        var start = new Date().getTime();
-        var interval = setInterval( function() 
-                                    {
-                                      var step = Math.min(1, (new Date().getTime() - start) / time);
-                                      elem[0].style[style] = (from + step * (to - from)) + unit;
-                                      elem[1].style[style] = (from + step * (to - from)) + unit;
-                                      elem[2].style[style] = (from + step * (to - from)) + unit;
-                                      if(step == 1)
-                                      {
-                                        clearInterval(interval);
-                                        endCallback();
-                                      }
-                                    }, 20);
-
-        elem[0].style[style] = from + unit;
-        elem[1].style[style] = from + unit;
-        elem[2].style[style] = from + unit;
-      }
-
-      function doFinishRotation () 
-      {
-        var start = new Date().getTime();
-        var finishTime1 = (GameModel.get().length - finish[0]) * (500 / (GameModel.get().length - finish[0]));
-        var finishTime2 = (GameModel.get().length - finish[1]) * (500 / (GameModel.get().length - finish[1]));
-        var finishTime3 = (GameModel.get().length - finish[2]) * (500 / (GameModel.get().length - finish[2]));
-        var interval1 = setInterval( function() 
-                                    {
-                                      var step = Math.min(1, (new Date().getTime() - start) / finishTime1);
-                                      elem[0].style[style] = (from + step * ((parseInt(finish[0]) * slotHeight) - from)) + unit;
-                                      if(step == 1) { 
-                                        clearInterval(interval1);
-                                        // callbackHandler();
-                                      }
-                                    }, 20);
-
-        var interval2 = setInterval( function() 
-                                    {
-                                      var step = Math.min(1, (new Date().getTime() - start) / finishTime2);
-                                      elem[1].style[style] = (from + step * ((parseInt(finish[1]) * slotHeight) - from)) + unit;
-                                      if(step == 1) { 
-                                        clearInterval(interval2);
-                                        // callbackHandler();
-                                      }
-                                    }, 20);
-
-        var interval3 = setInterval( function() 
-                                    {
-                                      var step = Math.min(1, (new Date().getTime() - start) / finishTime3);
-                                      elem[2].style[style] = (from + step * ((parseInt(finish[2]) * slotHeight) - from)) + unit;
-                                      if(step == 1) { 
-                                        clearInterval(interval3);
-                                        callbackHandler();
-                                      }
-                                    }, 20);
-
-        elem[0].style[style] = from + unit;
-        elem[1].style[style] = from + unit;
-        elem[2].style[style] = from + unit;
-      }
-
-      function whatNext()
-      {
-        numOfLoops--;
-        (numOfLoops > 0) ? doOneRotation(whatNext) : doFinishRotation();
-      }
-
-      doOneRotation(whatNext);
-      
-    },
-
     getEndSpinElement: function(winflag) {
       if(winflag == 1) {
         return Game.userSelection.id;
@@ -474,22 +392,6 @@
                       document.dispatchEvent(new CustomEvent("loseEvent"));
                     }
                   });
-
-        // self.animate(
-        //     [GameView.gameSlotL, GameView.gameSlotC, GameView.gameSlotR], "top", "px", 
-        //     GameModel.get().length * slotHeight, 0, 200, 
-        //     [self.getEndSpinElement(isWin1), self.getEndSpinElement(isWin2), self.getEndSpinElement(isWin3)],
-            // function() {
-            //   if(isWin1 == 1 && isWin2 == 1 ||
-            //     isWin2 == 1 && isWin3 == 1 ||
-            //     isWin3 == 1 && isWin1 == 1 ||
-            //     isWin1 == 1 && isWin2 == 1 && isWin3 == 1)
-            //   {
-            //     document.dispatchEvent(new CustomEvent("winEvent"));
-            //   } else {
-            //     document.dispatchEvent(new CustomEvent("loseEvent"));
-            //   }
-            // });
       }
 
       GameView.AddAnimationEventListener(GameView.gameControls, 'AnimationEnd', handler, false);
@@ -502,10 +404,6 @@
         });
     }
   }
-
-  var then = Date.now();
-  var w = window;
-  requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame;
 
   Game.start();
   GameView.init();
