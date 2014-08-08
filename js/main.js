@@ -289,7 +289,7 @@
       GameView.winMessageContext.shadowOffsetX = 1;
       GameView.winMessageContext.shadowOffsetY = 1;
       GameView.winMessageContext.shadowBlur = 2;
-      GameView.winMessageContext.font = "bold 50pt Arial";
+      GameView.winMessageContext.font = "bold 40pt Arial";
 
       var textWidth = GameView.winMessageContext.measureText(text).width / 2;
 
