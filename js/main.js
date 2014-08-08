@@ -67,8 +67,8 @@
       this.gameSceneContext.save();
       this.gameSceneContext.beginPath();
       this.gameSceneContext.moveTo(0 + offsetX, 0 + offsetY);
-      this.gameSceneContext.lineTo(0 + offsetX, GameView.slotHeight + offsetY);
-      this.gameSceneContext.lineTo(GameView.canvasWidth + offsetX, GameView.slotHeight + offsetY);
+      this.gameSceneContext.lineTo(0 + offsetX, GameView.slotHeight * 3 + offsetY);
+      this.gameSceneContext.lineTo(GameView.canvasWidth + offsetX, GameView.slotHeight * 3 + offsetY);
       this.gameSceneContext.lineTo(GameView.canvasWidth + offsetX, 0 + offsetY);
       this.gameSceneContext.closePath();
       this.gameSceneContext.clip();
@@ -118,9 +118,13 @@
       GameView.slotInCanvasCenter.x = GameView.canvasWidth / 2 - (GameView.slotWidth / 2);
       GameView.slotInCanvasRight.x = GameView.canvasWidth / 2 + (GameView.slotWidth / 2);
 
-      GameView.slotInCanvasLeft.posY = GameView.canvasHeight / 2 - GameView.slotHeight / 2;
-      GameView.slotInCanvasCenter.posY = GameView.canvasHeight / 2 - GameView.slotHeight / 2;
-      GameView.slotInCanvasRight.posY = GameView.canvasHeight / 2 - GameView.slotHeight / 2;
+      // GameView.slotInCanvasLeft.posY = GameView.canvasHeight / 2 - GameView.slotHeight / 2;
+      // GameView.slotInCanvasCenter.posY = GameView.canvasHeight / 2 - GameView.slotHeight / 2;
+      // GameView.slotInCanvasRight.posY = GameView.canvasHeight / 2 - GameView.slotHeight / 2;
+
+      GameView.slotInCanvasLeft.posY = 50;
+      GameView.slotInCanvasCenter.posY = 50;
+      GameView.slotInCanvasRight.posY = 50;
 
       Game.drawWinText("Spin the wheel!");
 
@@ -259,7 +263,8 @@
     },
 
     render: function (coords, slots) {
-      GameView.doMask(0, GameView.canvasHeight/2 - GameView.slotHeight/2);
+      // GameView.doMask(0, GameView.canvasHeight/2 - GameView.slotHeight/2);
+      GameView.doMask(0, 50);
 
       GameModel.get().forEach(function(obj, index) {
 
