@@ -5,42 +5,48 @@
         "title":"Wild",
         "value":"1",
         "k": "40",
-        "image":"./img/SYM1.png"
+        "image":"./img/SYM1.png",
+        "imageHigh":"./img/SYM1@x2.png"
      },
      {
         "id": "1",
         "title":"Strawberry",
         "value":"2",
         "k": "25",
-        "image":"./img/SYM2.png"
+        "image":"./img/SYM2.png",
+        "imageHigh":"./img/SYM2@x2.png"
      },
      {
         "id": "2",
         "title":"Pineapple",
         "value":"3",
         "k": "35",
-        "image":"./img/SYM3.png"
+        "image":"./img/SYM3.png",
+        "imageHigh":"./img/SYM3@x2.png"
      },
      {
         "id": "3",
         "title":"Lemon",
         "value":"4",
         "k": "15",
-        "image":"./img/SYM4.png"
+        "image":"./img/SYM4.png",
+        "imageHigh":"./img/SYM4@x2.png"
      },
      {
         "id": "4",
         "title":"Grape",
         "value":"5",
         "k": "19",
-        "image":"./img/SYM5.png"
+        "image":"./img/SYM5.png",
+        "imageHigh":"./img/SYM5@x2.png"
      },
      {
         "id": "5",
         "title":"Blackberry",
         "value":"6",
         "k": "64",
-        "image":"./img/SYM6.png"
+        "image":"./img/SYM6.png",
+        "imageHigh":"./img/SYM6@x2.png"
      }
   ]
 }

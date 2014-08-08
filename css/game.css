@@ -30,9 +30,9 @@ body, html {
 .game-controls {
 	z-index: 2;
 	position: absolute;
-	width: 50%;
-	height: 50%;
-	left: 25%;
+	width: 65%;
+	height: 60%;
+	left: 20%;
 	top: 25%;
 	background-color: #9A3334;
 	border-radius: 5px;
@@ -44,9 +44,9 @@ body, html {
 	float: left;
 	margin-right: 10px;
 	background-color: #217C7E;
-	width: 50%;
-	height: 50%;
-	left: 25%; /* 25% */
+	width: 65%;
+	height: 60%;
+	left: 20%;
 	top: 25%;
 	box-shadow: 0 0 10px;
 	border-radius: 5px;
@@ -68,13 +68,13 @@ body, html {
 .win-animation {
 	vertical-align: middle;
 	text-align: center;
-	font-size: 50px;
+	font-size: 70px;
 	font-weight: bold;
 	color: #F3EFE0;
 	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
 	width: 100%;
-	margin-top: 55px;
-	line-height: 20px;	
+	margin-top: 125px;
+	line-height: 20px;
 }
 
 .components {
@@ -117,15 +117,6 @@ button:focus {
     outline: none;
 }
 
-@media only all and (min-device-width: 481px) {
-	.game-scene .spin img {
-		transform: scale(1.7);
-	    -webkit-transform: scale(1.7);
-	    -o-transform: scale(1.7);
-	    -moz-transform: scale(1.7);
-	}
-}
-
 @media only all and (max-device-width: 480px) {
 	.game-scene {
 		width: 480px;
@@ -147,6 +138,7 @@ button:focus {
 	.win-animation {
 		line-height: 30px;
 		margin-top: 80px;
+		font-size: 50px;
 	}
 
 	.components {

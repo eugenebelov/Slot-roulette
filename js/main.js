@@ -4,6 +4,8 @@
     preloader: document.getElementById("preloader"),
     sceneCanvas: document.getElementById('gameSceneCanvas'),
     gameSceneContext: document.getElementById('gameSceneCanvas').getContext('2d'),
+    winMessageCanvas: document.getElementById('winMessageCanvas'),
+    winMessageContext: document.getElementById('winMessageCanvas').getContext('2d'),
     gameScene: document.getElementById("gameView"),
     gameControls: document.getElementById("gameControls"),
     selectedResult: document.getElementById("selectedResult"),
@@ -13,7 +15,7 @@
 
     slotInCanvasLeft: {
       x: 0, y: 0,
-      posX: 25, posY: 50,
+      posX: 0, posY: 0,
       render: function (content) {
         GameView.gameSceneContext.drawImage(content, 
                                               this.x + this.posX, 
@@ -22,8 +24,8 @@
     },
 
     slotInCanvasCenter: {
-      x: 150, y: 0,
-      posX: 25, posY: 50,
+      x: 0, y: 0,
+      posX: 0, posY: 0,
       render: function (content) {
         GameView.gameSceneContext.drawImage(content, 
                                               this.x + this.posX, 
@@ -32,8 +34,8 @@
     },
 
     slotInCanvasRight: {
-      x: 300, y: 0,
-      posX: 25, posY: 50,
+      x: 0, y: 0,
+      posX: 0, posY: 0,
       render: function (content) {
         GameView.gameSceneContext.drawImage(content, 
                                               this.x + this.posX, 
@@ -41,21 +43,33 @@
       }
     },
 
+    isMobile: {
+      Android: function() {
+          return navigator.userAgent.match(/Android/i);
+      },
+      iOS: function() {
+          return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+      },
+      any: function() {
+        return (this.Android() || this.iOS());
+      }
+    },
+
     resetCanvas: function() {
-      this.gameSceneContext.clearRect(0, 0, parseInt(this.canvasWidth), parseInt(this.canvasHeight));
+      this.gameSceneContext.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
     },
 
     resetPartCanvas: function(fromX, fromY, toX) {
-      this.gameSceneContext.clearRect(fromX, fromY, toX, parseInt(this.canvasHeight));
+      this.gameSceneContext.clearRect(fromX, fromY, toX, this.canvasHeight);
     },
 
     doMask: function(offsetX, offsetY) { 
       this.gameSceneContext.save();
       this.gameSceneContext.beginPath();
       this.gameSceneContext.moveTo(0 + offsetX, 0 + offsetY);
-      this.gameSceneContext.lineTo(0 + offsetX, 80 + offsetY);
-      this.gameSceneContext.lineTo(420 + offsetX, 80 + offsetY);
-      this.gameSceneContext.lineTo(420 + offsetX, 0 + offsetY);
+      this.gameSceneContext.lineTo(0 + offsetX, GameView.slotHeight + offsetY);
+      this.gameSceneContext.lineTo(GameView.canvasWidth + offsetX, GameView.slotHeight + offsetY);
+      this.gameSceneContext.lineTo(GameView.canvasWidth + offsetX, 0 + offsetY);
       this.gameSceneContext.closePath();
       this.gameSceneContext.clip();
     },
@@ -91,11 +105,24 @@
 
       var container = document.getElementById("spinContainer");
 
-      GameView.canvasWidth = window.getComputedStyle(container, null).width;
-      GameView.canvasHeight = window.getComputedStyle(container, null).height;
+      GameView.canvasWidth = parseInt(window.getComputedStyle(container, null).width);
+      GameView.canvasHeight = parseInt(window.getComputedStyle(container, null).height);
 
       GameView.sceneCanvas.setAttribute('width', window.getComputedStyle(container, null).width);
       GameView.sceneCanvas.setAttribute('height', window.getComputedStyle(container, null).height);
+
+      GameView.winMessageCanvas.setAttribute('width', window.getComputedStyle(container, null).width);
+      GameView.winMessageCanvas.setAttribute('height', window.getComputedStyle(container, null).height);
+
+      GameView.slotInCanvasLeft.x = GameView.canvasWidth / 2 - (GameView.slotWidth * 1.5);
+      GameView.slotInCanvasCenter.x = GameView.canvasWidth / 2 - (GameView.slotWidth / 2);
+      GameView.slotInCanvasRight.x = GameView.canvasWidth / 2 + (GameView.slotWidth / 2);
+
+      GameView.slotInCanvasLeft.posY = GameView.canvasHeight / 2 - GameView.slotHeight / 2;
+      GameView.slotInCanvasCenter.posY = GameView.canvasHeight / 2 - GameView.slotHeight / 2;
+      GameView.slotInCanvasRight.posY = GameView.canvasHeight / 2 - GameView.slotHeight / 2;
+
+      Game.drawWinText("Spin the wheel!");
 
       document.dispatchEvent(new CustomEvent("updateSelectList"));
     },
@@ -103,10 +130,13 @@
     showWin: function(e) {
       var handler = function() {
         GameView.RemoveAnimationEventListener(GameView.gameControls, 'AnimationEnd', handler, false);
-        console.log("win animation end");        
+        console.log("win animation end");     
 
-        GameView.winAnimation.innerHTML = 'You Win!';
-        GameView.winAnimation.className = "win-animation tada animated";
+        Game.drawWinText("You Win!");
+        GameView.winMessageCanvas.className = "tada animated";
+
+        // GameView.winAnimation.innerHTML = 'You Win!';
+        // GameView.winAnimation.className = "win-animation tada animated";
       };
 
       GameView.AddAnimationEventListener(GameView.gameControls, 'AnimationEnd', handler, false);
@@ -119,8 +149,12 @@
         GameView.RemoveAnimationEventListener(GameView.gameControls, 'AnimationEnd', handler, false);
         console.log("lose animation end");
 
-        GameView.winAnimation.innerHTML = "You Lose! <br /><span style='font-size:20px'>Spin the wheel!</span>";
-        GameView.winAnimation.className = "win-animation wobble animated";
+        Game.drawWinText("You Lose!");
+        // Game.drawWinText("Spin the wheel!");
+        GameView.winMessageCanvas.className = "wobble animated";
+
+        // GameView.winAnimation.innerHTML = "You Lose! <br /><span style='font-size:20px'>Spin the wheel!</span>";
+        // GameView.winAnimation.className = "win-animation wobble animated";
       }
 
       GameView.AddAnimationEventListener(GameView.gameControls, 'AnimationEnd', handler, false);
@@ -189,7 +223,16 @@
             GameView.preloader.style.width = (val + "%");
           }
         }
-        images[i].src = data[i].image;
+
+        if(GameView.isMobile.any()) { 
+          images[i].src = data[i].image;
+          GameView.slotWidth = 118;
+          GameView.slotHeight = 78;
+        } else {
+          images[i].src = data[i].imageHigh;
+          GameView.slotWidth = 235;
+          GameView.slotHeight = 155;
+        }
       }
     },
 
@@ -216,20 +259,20 @@
     },
 
     render: function (coords, slots) {
-      GameView.doMask(25, 50);
+      GameView.doMask(0, GameView.canvasHeight/2 - GameView.slotHeight/2);
 
       GameModel.get().forEach(function(obj, index) {
 
         if(slots[0] == true) {
-          GameView.slotInCanvasLeft.y = coords[0] + index * 80;
+          GameView.slotInCanvasLeft.y = coords[0] + index * GameView.slotHeight;
           GameView.slotInCanvasLeft.render(GameModel.getImages()[index]);
         } 
         if(slots[1] == true) {
-          GameView.slotInCanvasCenter.y = coords[1] + index * 80;
+          GameView.slotInCanvasCenter.y = coords[1] + index * GameView.slotHeight;
           GameView.slotInCanvasCenter.render(GameModel.getImages()[index]);
         } 
         if(slots[2] == true) {
-          GameView.slotInCanvasRight.y = coords[2] + index * 80;
+          GameView.slotInCanvasRight.y = coords[2] + index * GameView.slotHeight;
           GameView.slotInCanvasRight.render(GameModel.getImages()[index]);
         } 
 
@@ -238,10 +281,26 @@
       GameView.gameSceneContext.restore();
     },
 
+    drawWinText: function(text, posX, posY) {
+      GameView.winMessageContext.clearRect(0, 0, GameView.canvasWidth, GameView.canvasHeight);
+
+      GameView.winMessageContext.fillStyle = "#F3EFE0";
+      GameView.winMessageContext.shadowColor = "#000000";
+      GameView.winMessageContext.shadowOffsetX = 1;
+      GameView.winMessageContext.shadowOffsetY = 1;
+      GameView.winMessageContext.shadowBlur = 2;
+      GameView.winMessageContext.font = "bold 50pt Arial";
+
+      var textWidth = GameView.winMessageContext.measureText(text).width / 2;
+
+      GameView.winMessageContext.fillText(text, posX || GameView.canvasWidth/2 - textWidth, posY || GameView.canvasHeight/2);
+      GameView.winMessageContext.font = 'bold 30px sans-serif';
+    },
+
     animateCanvasSpin: function(from, to, loops, finishItemIndex, callback) {
       var callbackHandler = callback,
           numOfLoops = loops,
-          slotHeight = -80,
+          slotHeight = GameView.slotHeight  * -1,
           interval = -1;
 
       function doOneRotation(endCallback) 
@@ -281,7 +340,7 @@
                 function() {
                   var step = Math.min(1, (new Date().getTime() - start) / finishTime1);
                   slotLY = from + step * ((parseInt(finishItemIndex[0]) * slotHeight) - from);
-                  GameView.resetPartCanvas(0, 0, 200);
+                  GameView.resetPartCanvas(GameView.slotInCanvasLeft.x, 0, GameView.slotWidth);
                   Game.render([slotLY, 0, 0], [true, false, false]);
 
                   if(step == 1) { 
@@ -293,7 +352,7 @@
                 function() {
                   var step = Math.min(1, (new Date().getTime() - start) / finishTime2);
                   slotCY = from + step * ((parseInt(finishItemIndex[1]) * slotHeight) - from);
-                  GameView.resetPartCanvas(150, 0, 200);
+                  GameView.resetPartCanvas(GameView.slotInCanvasCenter.x, 0, GameView.slotWidth);
                   Game.render([0, slotCY, 0], [false, true, false]);
 
                   if(step == 1) { 
@@ -305,7 +364,7 @@
                 function() {
                   var step = Math.min(1, (new Date().getTime() - start) / finishTime3);
                   slotRY = from + step * ((parseInt(finishItemIndex[2]) * slotHeight) - from);
-                  GameView.resetPartCanvas(300, 0, 200);
+                  GameView.resetPartCanvas(GameView.slotInCanvasRight.x, 0, GameView.slotWidth);
                   Game.render([0, 0, slotRY], [false, false, true]);
 
                   if(step == 1) { 
@@ -370,8 +429,11 @@
 
       var handler = function() {
         GameView.RemoveAnimationEventListener(GameView.gameControls, 'AnimationEnd', handler, false);
-        GameView.winAnimation.innerHTML = '<br />';
-        GameView.winAnimation.className = "win-animation";
+        // GameView.winAnimation.innerHTML = '<br />';
+        // GameView.winAnimation.className = "win-animation";
+        Game.drawWinText("");
+        GameView.winMessageCanvas.className = "";
+
         GameView.spinButton.className = "btn";
 
         Game.animateCanvasSpin(GameModel.get().length * -80, 0, 3, 
